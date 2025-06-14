@@ -14,7 +14,6 @@
     <Folder Include="Helpers\" />
     <Folder Include="Interfaces\Services\" />
     <Folder Include="Mappings\" />
-    <Folder Include="Services\" />
   </ItemGroup>
 
   <ItemGroup>

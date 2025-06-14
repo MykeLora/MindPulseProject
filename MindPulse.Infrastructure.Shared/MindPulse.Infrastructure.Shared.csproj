@@ -10,4 +10,9 @@
     <Folder Include="Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MindPulse.Core.Application\MindPulse.Core.Application.csproj" />
+    <ProjectReference Include="..\MindPulse.Infrastructure.Persistence\MindPulse.Infrastructure.Persistence.csproj" />
+  </ItemGroup>
+
 </Project>

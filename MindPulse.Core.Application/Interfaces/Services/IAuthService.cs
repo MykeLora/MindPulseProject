@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MindPulse.Core.Application.Interfaces.Services
 {
-    public interface AuthService
+    public interface IAuthService
     {
         Task<string> UserRegistrationAsync(UserRegistrationDTO usuarioDto);
         Task<string> LoginAsync(UserLoginDTO loginDto);

@@ -1,4 +1,5 @@
-﻿using MindPulse.Core.Domain.Settings;
+﻿using MindPulse.Core.Application.DTOs.Email;
+using MindPulse.Core.Domain.Settings;
 using System;
 using System.Collections.Generic;
 using System.Linq;

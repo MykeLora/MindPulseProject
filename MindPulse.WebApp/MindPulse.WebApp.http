@@ -1,0 +1,6 @@
+@MindPulse.WebApp_HostAddress = http://localhost:5003
+
+GET {{MindPulse.WebApp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -363,4 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 # OpenAI APIKey
-**/appsettings.Development.json
+MindPulse.WebApp/appsettings.Development.json

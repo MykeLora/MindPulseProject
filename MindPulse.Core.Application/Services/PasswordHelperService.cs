@@ -9,6 +9,7 @@ namespace MindPulse.Core.Application.Services
 {
     public class PasswordHelperService : IPassWordHelperService
     {
+
         public string GenerateTemporalPassword(int length = 10)
         {
             const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

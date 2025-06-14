@@ -9,7 +9,7 @@ namespace MindPulse.Core.Application.DTOs.Auth
 {
     public class ChangePasswordDTO
     {
-        [Required(ErrorMessage = "CustomerId is required.")]
+        [Required(ErrorMessage = "UserId is required.")]
         public int CustomerId { get; set; }
 
         [Required(ErrorMessage = "Current Password is required.")]
@@ -22,6 +22,7 @@ namespace MindPulse.Core.Application.DTOs.Auth
         [Required(ErrorMessage = "Confirm New Password is required.")]
         [Compare("NewPassword", ErrorMessage = "New Password and Confirm New Password do not match.")]
         public string ConfirmNewPassword { get; set; }
+        public DateTime? LastModified { get; set; } = DateTime.UtcNow;
 
     }
 }

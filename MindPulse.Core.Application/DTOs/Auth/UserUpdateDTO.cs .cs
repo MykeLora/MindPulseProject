@@ -9,29 +9,24 @@ namespace MindPulse.Core.Application.DTOs.Auth
 {
     public class UserUpdateDTO
     {
-        [Required(ErrorMessage = "CustomerId is required.")]
-        public int CustomerId { get; set; }
+        [Required(ErrorMessage = "UserId is required.")]
+        public int UserId { get; set; }
 
-        [Required(ErrorMessage = "First Name is required.")]
-        [MinLength(2, ErrorMessage = "First Name must be at least 2 characters.")]
-        [MaxLength(50, ErrorMessage = "First Name cannot exceed 50 characters.")]
-        public string FirstName { get; set; }
+        [Required(ErrorMessage = "Name is required.")]
+        [MinLength(2, ErrorMessage = "Name must be at least 2 characters.")]
+        [MaxLength(50, ErrorMessage = "Name cannot exceed 50 characters.")]
+        public string Name { get; set; }
 
-        [Required(ErrorMessage = "Last Name is required.")]
-        [MinLength(2, ErrorMessage = "Last Name must be at least 2 characters.")]
-        [MaxLength(50, ErrorMessage = "Last Name cannot exceed 50 characters.")]
-        public string LastName { get; set; }
+        [Required(ErrorMessage = "UserName is required.")]
+        [MinLength(2, ErrorMessage = "UserName must be at least 2 characters.")]
+        [MaxLength(50, ErrorMessage = "UserName cannot exceed 50 characters.")]
+        public string UserName { get; set; }
 
         [Required(ErrorMessage = "Email is required.")]
         [EmailAddress(ErrorMessage = "Invalid Email Address.")]
         public string Email { get; set; }
+        public DateTime? LastModified { get; set; } = DateTime.UtcNow;
 
-        [Required(ErrorMessage = "PhoneNumber is required.")]
-        [Phone(ErrorMessage = "Invalid Phone Number.")]
-        public string PhoneNumber { get; set; }
-
-        [Required(ErrorMessage = "DateOfBirth is required.")]
-        public DateTime DateOfBirth { get; set; }
 
     }
 }

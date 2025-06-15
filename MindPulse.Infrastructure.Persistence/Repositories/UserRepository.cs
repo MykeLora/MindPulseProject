@@ -17,10 +17,10 @@ namespace MindPulse.Infrastructure.Persistence.Repositories
 {
     public class UserRepository : GenericRepository<User>, IUserRepository
     {
-
+         
         private readonly ApplicationContext _context;
         private readonly ILogger<UserRepository> _logger;
-        public UserRepository(ApplicationContext context, ILogger<UserRepository> logger) : base(context)
+        public UserRepository(ApplicationContext context, ILogger<UserRepository> logger): base(context)
         {
             _context = context;
             _logger = logger;

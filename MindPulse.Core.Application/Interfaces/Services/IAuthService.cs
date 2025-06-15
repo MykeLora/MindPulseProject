@@ -1,4 +1,5 @@
 ﻿using MindPulse.Core.Application.DTOs.Auth;
+using MindPulse.Core.Application.Wrappers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +10,9 @@ namespace MindPulse.Core.Application.Interfaces.Services
 {
     public interface IAuthService
     {
-        Task<string> UserRegistrationAsync(UserRegistrationDTO usuarioDto);
-        Task<string> LoginAsync(UserLoginDTO loginDto);
-        Task<bool> ConfirmAccountAsync(string token);
+        Task<ApiResponse<string>> UserRegistrationAsync(UserRegistrationDTO usuarioDto);
+        Task<ApiResponse<string>> LoginAsync(UserLoginDTO loginDto);
+        Task<ApiResponse<bool>> ConfirmAccountAsync(string token);
 
     }
 }

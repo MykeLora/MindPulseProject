@@ -26,23 +26,23 @@ builder.Services.AddHttpContextAccessor();
 // Registrar AutoMapper con el perfil DefaultProfile
 builder.Services.AddAutoMapper(typeof(DefaultProfile));
 
-// Registrar servicios específicos manualmente
+// Registrar servicios especÃ­ficos manualmente
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
+// Registrar servicios compartidos (como los definidos en Shared)
+builder.Services.AddMindPulseDependencies(builder.Configuration);
 
 builder.Services.AddControllers();
 
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+// Configurar Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+// Configurar middleware HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -50,10 +50,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

@@ -1,19 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="MailKit" Version="4.12.1" />
-    <PackageReference Include="MimeKit" Version="4.12.0" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="MailKit" Version="4.12.1" />
+		<PackageReference Include="MimeKit" Version="4.12.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\MindPulse.Core.Application\MindPulse.Core.Application.csproj" />
-    <ProjectReference Include="..\MindPulse.Infrastructure.Persistence\MindPulse.Infrastructure.Persistence.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\MindPulse.Core.Application\MindPulse.Core.Application.csproj" />
+		<ProjectReference Include="..\MindPulse.Infrastructure.Persistence\MindPulse.Infrastructure.Persistence.csproj" />
+	</ItemGroup>
 
 </Project>

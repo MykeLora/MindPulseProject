@@ -12,16 +12,16 @@ namespace MindPulse.Infrastructure.Persistence.Repositories
     public abstract class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private readonly ApplicationContext _dbContext;
-
+        private readonly DbSet<T> _dbSet;
         public GenericRepository(ApplicationContext context)
         {
             _dbContext = context;
+            _dbSet = context.Set<T>();
         }
-        public virtual async Task<T> AddAsync(T entity)
+        public virtual async Task AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
             await _dbContext.SaveChangesAsync();
-            return entity;
         }
 
         public virtual async Task DeleteAsync(int id)
@@ -55,11 +55,14 @@ namespace MindPulse.Infrastructure.Persistence.Repositories
             return entity;
         }
 
-        public virtual async Task UpdateAsync(T entity, int id)
+        public async Task UpdateAsync(T entity)
         {
-            var entry = await GetByIdAsync(id);
-            _dbContext.Entry(entry).CurrentValues.SetValues(entity);
-            await _dbContext.SaveChangesAsync();
+            _dbSet.Update(entity);
         }
+
     }
+
 }
+
+
+    

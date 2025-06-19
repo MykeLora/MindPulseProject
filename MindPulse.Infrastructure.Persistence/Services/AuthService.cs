@@ -10,65 +10,46 @@ using MindPulse.Core.Application.Interfaces.Repositories;
 using MindPulse.Core.Application.Interfaces.Services;
 using MindPulse.Core.Application.Wrappers;
 using MindPulse.Core.Domain.Entities;
-using MindPulse.Core.Domain.Settings;
-using MindPulse.Infrastructure.Persistence.Context;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Web;
+using AutoMapper;
+using static System.Formats.Asn1.AsnWriter;
 
-namespace MindPulse.Core.Application.Services.AuthService
+namespace MindPulse.Infrastructure.Services
 {
     public class AuthService : IAuthService
     {
         private readonly IUserRepository _userRepository;
         private readonly ILogger<AuthService> _logger;
+        private readonly IMapper _mapper;
 
-        public AuthService(IUserRepository userRepository, ILogger<AuthService> logger)
+        public AuthService(IUserRepository userRepository, ILogger<AuthService> logger, IMapper mapper)
         {
             _userRepository = userRepository;
             _logger = logger;
+            _mapper = mapper;
         }
 
-        public async Task<ApiResponse<DTOs.Auth.UserResponseDTO>> UserRegistrationAsync(UserRegistrationDTO usuarioDto)
+        public async Task<ApiResponse<Core.Application.DTOs.Auth.UserResponseDTO>> UserRegistrationAsync(UserRegistrationDTO usuarioDto)
         {
             try
             {
                 var existingUser = await _userRepository.GetUserByEmailAsync(usuarioDto.Email);
                 if (existingUser != null)
-                {
-                    return new ApiResponse<DTOs.Auth.UserResponseDTO>(400, "Email already in use.");
-                }
+                    return new ApiResponse<Core.Application.DTOs.Auth.UserResponseDTO>(400, "Email already in use.");
 
-                var user = new User
-                {
-                    Name = usuarioDto.Name,
-                    UserName = usuarioDto.UserName,
-                    Email = usuarioDto.Email,
-                    PasswordHash = BCrypt.Net.BCrypt.HashPassword(usuarioDto.Password),
-                    Created = DateTime.UtcNow
-                };
+                var user = _mapper.Map<User>(usuarioDto);
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(usuarioDto.Password);
+                user.Created = DateTime.UtcNow;
 
                 await _userRepository.AddAsync(user);
 
-                var userResponse = new DTOs.Auth.UserResponseDTO
-                {
-                    Id = user.Id,
-                    Name = $"{user.Name}",
-                    Email = user.Email
-                };
+                var userResponse = _mapper.Map<Core.Application.DTOs.Auth.UserResponseDTO>(user);
 
-                return new ApiResponse<DTOs.Auth.UserResponseDTO>(200, userResponse);
+                return new ApiResponse<Core.Application.DTOs.Auth.UserResponseDTO>(200, userResponse);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error registering user.");
-                return new ApiResponse<DTOs.Auth.UserResponseDTO>(500, $"Unexpected error: {ex.Message}");
+                return new ApiResponse<Core.Application.DTOs.Auth.UserResponseDTO>(500, $"Unexpected error: {ex.Message}");
             }
         }
 
@@ -78,21 +59,17 @@ namespace MindPulse.Core.Application.Services.AuthService
             {
                 var user = await _userRepository.GetUserByEmailAsync(loginDto.Email);
                 if (user == null)
-                {
                     return new ApiResponse<LoginResponseDTO>(401, "Invalid email or password.");
-                }
 
                 var isPasswordValid = BCrypt.Net.BCrypt.Verify(loginDto.Password, user.PasswordHash);
                 if (!isPasswordValid)
-                {
                     return new ApiResponse<LoginResponseDTO>(401, "Invalid email or password.");
-                }
 
                 var loginResponse = new LoginResponseDTO
                 {
                     Message = "Login successful.",
                     UserId = user.Id,
-                    UserName = $"{user.Name}"
+                    UserName = user.Name
                 };
 
                 return new ApiResponse<LoginResponseDTO>(200, loginResponse);
@@ -110,11 +87,9 @@ namespace MindPulse.Core.Application.Services.AuthService
             {
                 var user = await _userRepository.GetByIdAsync(changePasswordDto.Id);
                 if (user == null)
-                {
                     return new ApiResponse<ConfirmationResponseDTO>(404, "User not found.");
-                }
 
-                user.PasswordHash = changePasswordDto.NewPassword; 
+                user.PasswordHash = BCrypt.Net.BCrypt.HashPassword(changePasswordDto.NewPassword);
                 await _userRepository.ChangePasswordAsync(user);
 
                 return new ApiResponse<ConfirmationResponseDTO>(200, new ConfirmationResponseDTO
@@ -129,5 +104,4 @@ namespace MindPulse.Core.Application.Services.AuthService
             }
         }
     }
-
 }

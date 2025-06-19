@@ -14,7 +14,6 @@ namespace MindPulse.Core.Application.Interfaces.Repositories
 
         Task<UserStatisticsDTO?> GetUserStatisticsAsync(int userId);
         Task<User?> GetUserByEmailAsync(string email);
-        Task<User> GetByTokenAsync(string token);
         Task ChangePasswordAsync( User user);
     }
 }

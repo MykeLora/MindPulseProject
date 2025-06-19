@@ -24,7 +24,10 @@ namespace MindPulse.Infrastructure.Shared.Services
         {
             try
             {
-                MimeMessage message = new()
+                if (string.IsNullOrWhiteSpace(emailRequest.Body))
+                    throw new ArgumentException("El cuerpo del correo (Body) no puede ser nulo o vacío.");
+
+                var message = new MimeMessage
                 {
                     Sender = MailboxAddress.Parse(emailRequest.From ?? EmailSettings.EmailFrom)
                 };
@@ -32,25 +35,25 @@ namespace MindPulse.Infrastructure.Shared.Services
                 message.To.Add(MailboxAddress.Parse(emailRequest.To));
                 message.Subject = emailRequest.Subject;
 
-                BodyBuilder bodyBuilder = new()
+                var bodyBuilder = new BodyBuilder
                 {
                     HtmlBody = emailRequest.Body
                 };
 
                 message.Body = bodyBuilder.ToMessageBody();
 
-                using SmtpClient smtpClient = new();
-                smtpClient.Connect(EmailSettings.SmtpHost, EmailSettings.SmtpPort, SecureSocketOptions.StartTls);
-                smtpClient.Authenticate(EmailSettings.SmtpUser, EmailSettings.SmtpPass);
+                using var smtpClient = new SmtpClient();
+                await smtpClient.ConnectAsync(EmailSettings.SmtpHost, EmailSettings.SmtpPort, SecureSocketOptions.StartTls);
+                await smtpClient.AuthenticateAsync(EmailSettings.SmtpUser, EmailSettings.SmtpPass);
                 await smtpClient.SendAsync(message);
-                smtpClient.Disconnect(true);
+                await smtpClient.DisconnectAsync(true);
             }
             catch (Exception ex)
             {
-
-                throw new Exception(ex.Message);
+                throw new Exception($"Error al enviar el correo: {ex.Message}", ex);
             }
         }
 
     }
+
 }

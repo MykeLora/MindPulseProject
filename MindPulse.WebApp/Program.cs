@@ -5,6 +5,7 @@ using Microsoft.IdentityModel.Tokens;
 using MindPulse.Core.Application.Interfaces.Repositories;
 using MindPulse.Core.Application.Interfaces.Services;
 using MindPulse.Core.Application.Services.AuthService;
+using MindPulse.Core.Domain.Settings;
 using MindPulse.Infrastructure.Persistence.Context;
 using MindPulse.Infrastructure.Persistence.Repositories;
 using MindPulse.Infrastructure.Shared.Services;
@@ -18,11 +19,17 @@ builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlServe
 // Registrar HttpContextAccessor
 builder.Services.AddHttpContextAccessor();
 
+
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt")); // <-- Agrega esto
+
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 
-// Configuración de Autenticación y Autorización
+Console.WriteLine($"JWT Key: {builder.Configuration["Jwt:Key"]}");
+
+
+// Configuracion de Autenticacion y Autorizacion
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -46,8 +53,10 @@ builder.Services.AddAuthentication(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
     options.Cookie.SameSite = SameSiteMode.Strict;
-    options.LoginPath = "/api/usuarios/login"; // Ruta de login
+    options.LoginPath = "/api/user/login"; 
 });
+
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -64,6 +73,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

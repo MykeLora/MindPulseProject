@@ -26,6 +26,7 @@ namespace MindPulse.Infrastructure.Persistence.Repositories
             _logger = logger;
         }
 
+
         public async Task ChangePasswordAsync(User user)
         {
             try
@@ -53,26 +54,7 @@ namespace MindPulse.Infrastructure.Persistence.Repositories
             }
 
         }
-        public async Task<User?> GetByTokenAsync(string token)
-        {
-            try
-            {
-                var user = await _context.Users
-                    .FirstOrDefaultAsync(u => u.VerificationToken == token);
 
-                if (user == null)
-                {
-                    _logger.LogWarning("User not found with the provided token.");
-                }
-
-                return user;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error retrieving user by token: {Token}", token);
-                throw;
-            }
-        }
         public async Task<User?> GetUserByEmailAsync(string email)
         {
             try

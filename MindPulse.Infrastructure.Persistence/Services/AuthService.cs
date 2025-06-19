@@ -20,12 +20,18 @@ namespace MindPulse.Infrastructure.Services
         private readonly IUserRepository _userRepository;
         private readonly ILogger<AuthService> _logger;
         private readonly IMapper _mapper;
+        private readonly IEmailService _emailService;
 
-        public AuthService(IUserRepository userRepository, ILogger<AuthService> logger, IMapper mapper)
+        public AuthService(
+            IUserRepository userRepository,
+            ILogger<AuthService> logger,
+            IMapper mapper,
+            IEmailService emailService)
         {
             _userRepository = userRepository;
             _logger = logger;
             _mapper = mapper;
+            _emailService = emailService;
         }
 
         public async Task<ApiResponse<Core.Application.DTOs.Auth.UserResponseDTO>> UserRegistrationAsync(UserRegistrationDTO usuarioDto)
@@ -42,6 +48,15 @@ namespace MindPulse.Infrastructure.Services
 
                 await _userRepository.AddAsync(user);
 
+                // Send welcome/confirmation email
+                var emailRequest = new EmailRequest
+                {
+                    To = user.Email,
+                    Subject = "Welcome to MindPulse!",
+                    Body = $"<p>Hello {user.Name},</p><p>Thank you for registering at MindPulse.</p>"
+                };
+                await _emailService.SendAsync(emailRequest);
+
                 var userResponse = _mapper.Map<Core.Application.DTOs.Auth.UserResponseDTO>(user);
 
                 return new ApiResponse<Core.Application.DTOs.Auth.UserResponseDTO>(200, userResponse);
@@ -52,6 +67,7 @@ namespace MindPulse.Infrastructure.Services
                 return new ApiResponse<Core.Application.DTOs.Auth.UserResponseDTO>(500, $"Unexpected error: {ex.Message}");
             }
         }
+
 
         public async Task<ApiResponse<LoginResponseDTO>> LoginAsync(UserLoginDTO loginDto)
         {

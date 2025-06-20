@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using MindPulse.Core.Application.DTOs.Auth;
+using MindPulse.Core.Application.DTOs.Categories;
 using MindPulse.Core.Domain.Entities;
+using MindPulse.Core.Domain.Entities.Categories;
 
 namespace MindPulse.Core.Application.Mappings
 {
@@ -8,19 +10,18 @@ namespace MindPulse.Core.Application.Mappings
     {
         public DefaultProfile()
         {
-            // User → UserResponseDTO
+            // --- USER MAPPINGS ---
             CreateMap<User, UserResponseDTO>();
-
-            // UserResponseDTO → User
             CreateMap<UserResponseDTO, User>();
 
-            // UserRegistrationDTO → User (ignora el hash, se hace manual)
             CreateMap<UserRegistrationDTO, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
 
-            // ChangePasswordDTO → User (mapear solo el hash)
             CreateMap<ChangePasswordDTO, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.NewPassword));
+
+            // --- CATEGORY MAPPINGS ---
+            CreateMap<Category, CategoryDTO>().ReverseMap();
         }
     }
 }

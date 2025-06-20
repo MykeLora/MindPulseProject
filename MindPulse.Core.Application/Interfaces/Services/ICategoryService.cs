@@ -1,15 +1,9 @@
 using MindPulse.Core.Application.DTOs.Categories;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+using MindPulse.Core.Domain.Entities.Categories;
 
 namespace MindPulse.Core.Application.Interfaces.Services
 {
-    public interface ICategoryService
+    public interface ICategoryService : IGenericService<CategoryDTO, CategoryDTO, Category, CategoryDTO>
     {
-        Task<List<CategoryDTO>> GetAllAsync();
-        Task<CategoryDTO> GetByIdAsync(int id);
-        Task AddAsync(CategoryDTO categoryDto);
-        Task UpdateAsync(CategoryDTO categoryDto);
-        Task DeleteAsync(int id);
     }
 }

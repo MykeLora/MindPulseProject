@@ -20,7 +20,7 @@ public class CategoryController : ControllerBase
     [HttpPost("create")]
     public async Task<IActionResult> CreateCategory([FromBody] CategoryDTO categoryDto)
     {
-        await _categoryService.AddAsync(categoryDto);
+        await _categoryService.CreateAsync(categoryDto);
         return Ok(categoryDto);
     }
 

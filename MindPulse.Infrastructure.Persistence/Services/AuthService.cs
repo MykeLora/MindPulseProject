@@ -13,7 +13,7 @@ using MindPulse.Core.Domain.Entities;
 using AutoMapper;
 using static System.Formats.Asn1.AsnWriter;
 
-namespace MindPulse.Infrastructure.Services
+namespace MindPulse.Infrastructure.Persistence.Services
 {
     public class AuthService : IAuthService
     {

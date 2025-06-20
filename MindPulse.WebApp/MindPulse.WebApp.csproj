@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MindPulse.Core.Application\MindPulse.Core.Application.csproj" />
     <ProjectReference Include="..\MindPulse.Infrastructure.Persistence\MindPulse.Infrastructure.Persistence.csproj" />
     <ProjectReference Include="..\MindPulse.Infrastructure.Shared\MindPulse.Infrastructure.Shared.csproj" />
   </ItemGroup>

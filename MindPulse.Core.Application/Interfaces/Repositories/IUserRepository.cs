@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 
 namespace MindPulse.Core.Application.Interfaces.Repositories
 {
-    public interface IUserRepository
+    public interface IUserRepository : IGenericRepository<User>
     {
 
         Task<UserStatisticsDTO?> GetUserStatisticsAsync(int userId);
         Task<User?> GetUserByEmailAsync(string email);
-        Task<User> GetByTokenAsync(string token);
         Task ChangePasswordAsync( User user);
-
     }
 }

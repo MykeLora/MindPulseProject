@@ -7,11 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-  <Compile Include="DTOs\Emotions\**\*.cs" />
-  <Compile Include="DTOs\Evaluations\**\*.cs" />
-  <Compile Include="DTOs\Recommendations\**\*.cs" />
-  <Compile Include="Helpers\**\*.cs" />
-  <Compile Include="Mappings\**\*.cs" />
+    <Folder Include="DTOs\Emotions\" />
+    <Folder Include="DTOs\Evaluations\" />
+    <Folder Include="DTOs\Recommendations\" />
   </ItemGroup>
 
 

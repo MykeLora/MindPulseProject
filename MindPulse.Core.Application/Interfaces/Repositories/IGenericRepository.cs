@@ -8,11 +8,11 @@ namespace MindPulse.Core.Application.Interfaces.Repositories
 {
     public interface IGenericRepository<Entity> where Entity : class
     {
-        Task AddAsync(Entity entity);
+        Task<Entity> AddAsync(Entity entity);
         Task<Entity> GetByIdAsync(int id);
         Task<List<Entity>> GetAllAsync();
-        Task UpdateAsync(Entity entity);
-        Task DeleteAsync(int id);
+        Task<Entity> UpdateAsync(Entity entity);
+        Task<bool> DeleteAsync(int id);
         Task<List<Entity>> GetAllWithIncludes(List<string> properties);
     }
 }

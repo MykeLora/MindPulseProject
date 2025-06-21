@@ -1,4 +1,8 @@
-﻿using System;
+﻿using MindPulse.Core.Domain.Entities.Emotions;
+using MindPulse.Core.Domain.Entities.Evaluations;
+using MindPulse.Core.Domain.Entities.Recommendations;
+using MindPulse.Infrastructure.Persistence.Context;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,16 +14,18 @@ using MindPulse.Core.Application.Interfaces.Services;
 namespace MindPulse.Infrastructure.Shared.Services
 {
 
-    // TODO: Guardar resultado en base de datos cuando las entidades estén disponibles
+    // TODO: Guardar resultado en EvaluationRequest y Recommendation (Se necesita conexion a cuestionarios aún)
     // await _evaluationRepository.AddAsync(new Evaluation { ... });
 
     public class EvaluationService : IEvaluationService
     {
         private readonly IOpenAiService _openAiService;
+        private readonly ApplicationContext _context;
 
-        public EvaluationService(IOpenAiService openAiService)
+        public EvaluationService(IOpenAiService openAiService, ApplicationContext context)
         {
             _openAiService = openAiService;
+            _context = context;
         }
 
         public async Task<EvaluationResult> EvaluateTestAsync(EvaluationRequest request)
@@ -28,7 +34,41 @@ namespace MindPulse.Infrastructure.Shared.Services
 
             var rawResponse = await _openAiService.AnalyzeTextAsync(prompt);
 
-            return ParseEvaluationResponse(rawResponse, "test");
+            var parsed = ParseEvaluationResponse(rawResponse, "test");
+
+            // Se guardan los resultados del test en la base de datos
+            var testResult = new TestResult
+            {
+                CompletionDate = DateTime.UtcNow,
+                Summary = parsed.Summary,
+                SeverityScore = parsed.Level switch
+                {
+                    "Bajo" => 0.9f,
+                    "Moderado" => 0.6f,
+                    "Alto" => 0.3f,
+                    _ => 0.5f
+                },
+                QuestionnaireId = request.CategoryId, // a modificarse cuando se conecte con cuestionarios
+                UserId = request.UserId
+            };
+
+            await _context.TestResults.AddAsync(testResult);
+            await _context.SaveChangesAsync();
+
+            // Se guarda la recomendación en la base de datos
+            var recommendation = new Recommendation
+            {
+                Title = $"Recomendación para resultado {parsed.Level}",
+                Content = parsed.Recommendation,
+                UrlSource = null, // A modificar cuando se conecte con una fuente de recomendación
+                UserId = request.UserId,
+                CategoryId = request.CategoryId
+            };
+
+            await _context.Recommendations.AddAsync(recommendation);
+            await _context.SaveChangesAsync();
+
+            return parsed;
         }
 
         public async Task<EvaluationResult> EvaluateFreeTextAsync(FreeTextEvaluationRequest request)
@@ -40,7 +80,22 @@ namespace MindPulse.Infrastructure.Shared.Services
 
             var rawResponse = await _openAiService.AnalyzeTextAsync(prompt);
 
-            return ParseEvaluationResponse(rawResponse, "libre");
+            var parsed = ParseEvaluationResponse(rawResponse, "libre");
+
+            // Se guarda el resultado en la base de datos
+            var entity = new EmotionalAnalysis
+            {
+                InputText = combinedText,
+                DetectedEmotion = parsed.Level,
+                Confidence = 0.85f, // Simulación de confianza
+                AnalysisDate = DateTime.UtcNow,
+                UserId = request.UserId
+            };
+
+            await _context.EmotionAnalyses.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            return parsed;
         }
 
         private string BuildPromptFromTest(EvaluationRequest request)

@@ -8,7 +8,7 @@ namespace MindPulse.Core.Application.DTOs
 {
     public class FreeTextEvaluationRequest
     {
-        public Guid UserId { get; set; }
+        public int UserId { get; set; }
         public List<string> Messages { get; set; } // Para almacener la conversación entera
     }
 }

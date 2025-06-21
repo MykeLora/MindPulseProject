@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MindPulse.Core.Application.Wrappers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,11 +13,11 @@ namespace MindPulse.Core.Application.Interfaces.Services
     where Entity : class
     where Response : class
     {
-        Task<Response> CreateAsync(CreateDTO createDto);
-        Task<Response> UpdateAsync(UpdateDTO updateDto);
-        Task DeleteAsync(int id);
-        Task<Response?> GetByIdAsync(int id);
-        Task<List<Response>> GetAllAsync();
+        Task<ApiResponse<Response>> CreateAsync(CreateDTO createDto);
+        Task<ApiResponse<Response>> UpdateAsync(UpdateDTO updateDto);
+        Task<ApiResponse<bool>> DeleteAsync(int id);
+        Task<ApiResponse<Response?>> GetByIdAsync(int id);
+        Task<ApiResponse<List<Response>>> GetAllAsync();
 
     }
 }

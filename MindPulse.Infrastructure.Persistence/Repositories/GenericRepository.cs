@@ -18,17 +18,24 @@ namespace MindPulse.Infrastructure.Persistence.Repositories
             _dbContext = context;
             _dbSet = context.Set<T>();
         }
-        public virtual async Task AddAsync(T entity)
+        public virtual async Task<T> AddAsync(T entity)
         {
             await _dbContext.Set<T>().AddAsync(entity);
             await _dbContext.SaveChangesAsync();
+            return entity;
         }
 
-        public virtual async Task DeleteAsync(int id)
+        public virtual async Task<bool> DeleteAsync(int id)
         {
             var entity = await GetByIdAsync(id);
+
+            if (entity == null)
+                return false; 
+
             _dbContext.Remove(entity);
             await _dbContext.SaveChangesAsync();
+
+            return true; 
         }
 
         public virtual async Task<List<T>> GetAllAsync()
@@ -55,9 +62,11 @@ namespace MindPulse.Infrastructure.Persistence.Repositories
             return entity;
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task<T> UpdateAsync(T entity)
         {
             _dbSet.Update(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
         }
 
     }

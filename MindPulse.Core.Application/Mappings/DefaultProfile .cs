@@ -28,6 +28,12 @@ namespace MindPulse.Core.Application.Mappings
 
             #endregion
 
+            #region Category Mappings
+
+            CreateMap<Category, CategoryDTO>().ReverseMap();
+
+            #endregion
+
             #region AnswerOption Mappings
 
             CreateMap<AnswerOptionCreateDTO, AnswerOption>();

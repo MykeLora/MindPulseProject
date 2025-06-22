@@ -28,7 +28,7 @@ namespace MindPulse.Core.Application.Services
             try
             {
                 var createEntity = _mapper.Map<Entity>(createDto);
-                var createdEntity =  _repo.AddAsync(createEntity);
+                var createdEntity = await _repo.AddAsync(createEntity); // AWAIT agregado
                 var response = _mapper.Map<Response>(createdEntity);
 
                 return new ApiResponse<Response>(200, response);
@@ -44,7 +44,7 @@ namespace MindPulse.Core.Application.Services
             try
             {
                 var entityToUpdate = _mapper.Map<Entity>(updateDto);
-                var result =  _repo.UpdateAsync(entityToUpdate);
+                var result = await _repo.UpdateAsync(entityToUpdate); // AWAIT agregado
 
                 if (result == null)
                     return new ApiResponse<Response>(404, "Entity not found.");
@@ -62,8 +62,8 @@ namespace MindPulse.Core.Application.Services
         {
             try
             {
-                var result =  _repo.DeleteAsync(id);
-                if (result == null)
+                var result = await _repo.DeleteAsync(id); // AWAIT agregado
+                if (!result)
                     return new ApiResponse<bool>(404, "Entity not found.");
 
                 return new ApiResponse<bool>(200, true);

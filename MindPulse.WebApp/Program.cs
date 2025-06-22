@@ -40,6 +40,8 @@ builder.Services.AddAutoMapper(typeof(DefaultProfile));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IQuestionaireRepository, QuestionnaireRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
 
 
 
@@ -48,6 +50,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IQuestionnaireService, QuestionnaireService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+
 
 
 builder.Services.AddControllers()

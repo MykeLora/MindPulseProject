@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
 using MindPulse.Core.Application.Interfaces.Repositories;
 using MindPulse.Core.Application.Interfaces.Services;
+using MindPulse.Core.Application.Wrappers;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MindPulse.Core.Application.Services
@@ -15,7 +14,6 @@ namespace MindPulse.Core.Application.Services
          where Entity : class
          where Response : class
     {
-
         private readonly IGenericRepository<Entity> _repo;
         private readonly IMapper _mapper;
 
@@ -23,50 +21,88 @@ namespace MindPulse.Core.Application.Services
         {
             _repo = repo;
             _mapper = mapper;
-
         }
-        public Task<Response> CreateAsync(CreateDTO createDto)
+
+        public virtual async Task<ApiResponse<Response>> CreateAsync(CreateDTO createDto)
         {
-
-            var createEntity = _mapper.Map<Entity>(createDto);
-
             try
             {
+                var createEntity = _mapper.Map<Entity>(createDto);
+                var createdEntity =  _repo.AddAsync(createEntity);
+                var response = _mapper.Map<Response>(createdEntity);
 
-                var createdEntity = _repo.AddAsync(createEntity);
-                return Task.FromResult(_mapper.Map<Response>(createdEntity));
+                return new ApiResponse<Response>(200, response);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw new Exception("An error occurred while creating the entity.");
+                return new ApiResponse<Response>(500, $"An error occurred while creating the entity: {ex.Message}");
             }
-
         }
 
-        public async Task DeleteAsync(int id)
+        public virtual async Task<ApiResponse<Response>> UpdateAsync(UpdateDTO updateDto)
         {
-            await _repo.DeleteAsync(id);
+            try
+            {
+                var entityToUpdate = _mapper.Map<Entity>(updateDto);
+                var result =  _repo.UpdateAsync(entityToUpdate);
+
+                if (result == null)
+                    return new ApiResponse<Response>(404, "Entity not found.");
+
+                var response = _mapper.Map<Response>(result);
+                return new ApiResponse<Response>(200, response);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<Response>(500, $"An error occurred while updating the entity: {ex.Message}");
+            }
         }
 
-        public async Task<List<Response>> GetAllAsync()
+        public virtual async Task<ApiResponse<bool>> DeleteAsync(int id)
         {
-            return _mapper.Map<List<Response>>(await _repo.GetAllAsync());
+            try
+            {
+                var result =  _repo.DeleteAsync(id);
+                if (result == null)
+                    return new ApiResponse<bool>(404, "Entity not found.");
+
+                return new ApiResponse<bool>(200, true);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<bool>(500, $"An error occurred while deleting the entity: {ex.Message}");
+            }
         }
 
-        public Task<Response?> GetByIdAsync(int id)
+        public virtual async Task<ApiResponse<Response?>> GetByIdAsync(int id)
         {
-            return _mapper.Map<Task<Response?>>(_repo.GetByIdAsync(id));
+            try
+            {
+                var entity = await _repo.GetByIdAsync(id);
+                if (entity == null)
+                    return new ApiResponse<Response?>(404, "Entity not found.");
+
+                var response = _mapper.Map<Response>(entity);
+                return new ApiResponse<Response?>(200, response);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<Response?>(500, $"An error occurred while retrieving the entity: {ex.Message}");
+            }
         }
 
-        public async Task<Response> UpdateAsync(UpdateDTO updateDto)
+        public virtual async Task<ApiResponse<List<Response>>> GetAllAsync()
         {
-
-            var entityToUpdate = _mapper.Map<Entity>(updateDto);
-            var result =   _repo.UpdateAsync(entityToUpdate);
-
-            return _mapper.Map<Response>(result);
+            try
+            {
+                var entities = await _repo.GetAllAsync();
+                var responseList = _mapper.Map<List<Response>>(entities);
+                return new ApiResponse<List<Response>>(200, responseList);
+            }
+            catch (Exception ex)
+            {
+                return new ApiResponse<List<Response>>(500, $"An error occurred while retrieving all entities: {ex.Message}");
+            }
         }
-
     }
 }

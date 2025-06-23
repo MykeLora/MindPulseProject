@@ -3,9 +3,8 @@ using MindPulse.Core.Application.Interfaces.Repositories;
 using MindPulse.Core.Application.Interfaces.Services;
 using MindPulse.Core.Domain.Entities.Categories;
 using AutoMapper;
-using MindPulse.Core.Application.Services;
 
-namespace MindPulse.Infrastructure.Persistence.Services
+namespace MindPulse.Core.Application.Services
 {
     public class CategoryService : GenericService<CategoryDTO, CategoryDTO, Category, CategoryDTO>, ICategoryService
     {

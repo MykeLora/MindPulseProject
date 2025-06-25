@@ -19,6 +19,7 @@ namespace MindPulse.WebApp
         {
             services.AddHttpClient<IOpenAiService, OpenAiService>();
             services.AddScoped<IEvaluationService, EvaluationService>();
+            services.AddScoped<IJwtService, JwtService>();
             return services;
         }
     }

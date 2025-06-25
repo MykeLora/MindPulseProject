@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 using MindPulse.Core.Application.DTOs.Auth;
 using MindPulse.Core.Application.DTOs.Email;
@@ -17,6 +18,7 @@ namespace MindPulse.Infrastructure.Services
 {
     public class AuthService : IAuthService
     {
+        private readonly IJwtService _jwtService;
         private readonly IUserRepository _userRepository;
         private readonly ILogger<AuthService> _logger;
         private readonly IMapper _mapper;
@@ -26,12 +28,14 @@ namespace MindPulse.Infrastructure.Services
             IUserRepository userRepository,
             ILogger<AuthService> logger,
             IMapper mapper,
-            IEmailService emailService)
+            IEmailService emailService,
+            IJwtService jwtService)
         {
             _userRepository = userRepository;
             _logger = logger;
             _mapper = mapper;
             _emailService = emailService;
+            _jwtService = jwtService;
         }
 
         public async Task<ApiResponse<Core.Application.DTOs.Auth.UserResponseDTO>> UserRegistrationAsync(UserRegistrationDTO usuarioDto)
@@ -81,14 +85,20 @@ namespace MindPulse.Infrastructure.Services
                 if (!isPasswordValid)
                     return new ApiResponse<LoginResponseDTO>(401, "Invalid email or password.");
 
+                var token = _jwtService.GenerateToken(user.Id.ToString(), user.Email, new List<string>());
+
+
                 var loginResponse = new LoginResponseDTO
                 {
                     Message = "Login successful.",
                     UserId = user.Id,
-                    UserName = user.Name
+                    UserName = user.Name,
+                    Token = token
                 };
 
                 return new ApiResponse<LoginResponseDTO>(200, loginResponse);
+
+
             }
             catch (Exception ex)
             {

@@ -14,6 +14,8 @@ namespace MindPulse.Core.Application.Interfaces.Services
         Task<ApiResponse<DTOs.Auth.UserResponseDTO>> UserRegistrationAsync(UserRegistrationDTO usuarioDto);
         Task<ApiResponse<LoginResponseDTO>> LoginAsync(UserLoginDTO loginDto);
         Task<ApiResponse<ConfirmationResponseDTO>> ChangePasswordAsync(ChangePasswordDTO changePasswordDto);
+        Task<ApiResponse<ConfirmationResponseDTO>> ForgotPasswordAsync(ForgotPasswordRequestDTO forgotPasswordDto);
+        Task<ApiResponse<ConfirmationResponseDTO>> ResetPasswordAsync(ResetPasswordDTO resetPasswordDto);
 
     }
 }

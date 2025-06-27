@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Azure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
 using MindPulse.Core.Application.DTOs.Auth;
@@ -14,7 +15,6 @@ namespace MindPulse.WebApp.Controllers
     public class AccountController : ControllerBase
     {
         private readonly IAuthService _authService;
-
 
         public AccountController(IAuthService authService)
         {
@@ -71,5 +71,37 @@ namespace MindPulse.WebApp.Controllers
 
             return Ok(response);
         }
+
+        /// <summary>
+        /// Recuperar contraseña de usuario (Solicitud de enlace para restablecimiento)
+        /// </summary>
+        [HttpPost("ForgotPassword")]
+        public async Task<ActionResult<ApiResponse<ConfirmationResponseDTO>>> ForgotPassword([FromBody] ForgotPasswordRequestDTO forgotPasswordDto)
+        {
+            if (forgotPasswordDto == null || string.IsNullOrWhiteSpace(forgotPasswordDto.Email))
+                return BadRequest(new ApiResponse<ConfirmationResponseDTO>(400, "El email es requerido."));
+
+            var response = await _authService.ForgotPasswordAsync(forgotPasswordDto);
+
+            if (response.StatusCode != 200)
+                return StatusCode(response.StatusCode, response);
+
+            return Ok(response);
+        }
+
+        /// <summary>
+        /// Restablecimiento a través del enlace enviado por correo
+        /// </summary>
+
+        [HttpPost("ResetPassword")]
+        public async Task<ActionResult<ApiResponse<ConfirmationResponseDTO>>> ResetPassword([FromBody] ResetPasswordDTO resetPasswordDto)
+        {
+            if (resetPasswordDto == null || string.IsNullOrWhiteSpace(resetPasswordDto.Token) || string.IsNullOrWhiteSpace(resetPasswordDto.NewPassword))
+                return BadRequest(new ApiResponse<ConfirmationResponseDTO>(400, "Datos inválidos."));
+
+            var response = await _authService.ResetPasswordAsync(resetPasswordDto);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 }
+

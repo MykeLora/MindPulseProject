@@ -9,5 +9,7 @@ namespace MindPulse.Core.Application.Interfaces.Services
     public interface IJwtService
     {
         string GenerateToken(string userId, string email, List<string> list);
+        string GeneratePasswordResetToken(string userId, string email);
+
     }
 }

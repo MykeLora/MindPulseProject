@@ -21,6 +21,14 @@ namespace MindPulse.Infrastructure.Persistence.Repositories.Recommendations
                 .Where(ec => categoryIds.Contains(ec.CategoryId))
                 .ToListAsync();
         }
+
+        public async Task<List<EducationalContent>> GetAllWithCategoryAsync()
+        {
+            return await _context.EducationalContents
+                .Include(ec => ec.Category)
+                .ToListAsync();
+        }
+
     }
 
 }

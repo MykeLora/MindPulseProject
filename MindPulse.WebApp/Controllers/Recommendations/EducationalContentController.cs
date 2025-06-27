@@ -51,5 +51,12 @@ namespace MindPulse.WebApp.Controllers.Recommendations
             var result = await _educationalContentService.DeleteAsync(id);
             return StatusCode(result.StatusCode, result);
         }
+        [HttpGet("by-categories")]
+        public async Task<IActionResult> GetByCategoryIds([FromQuery] List<int> categoryIds)
+        {
+            var result = await _educationalContentService.GetByCategoryIdsAsync(categoryIds);
+            return StatusCode(result.StatusCode, result);
+        }
+
     }
 }

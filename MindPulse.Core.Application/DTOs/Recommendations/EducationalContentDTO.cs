@@ -9,5 +9,8 @@ namespace MindPulse.Core.Application.DTOs.Recommendations
         public string Url { get; set; }
 
         public int CategoryId { get; set; }
+        public string CategoryName { get; set; }
+
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MindPulse.Core.Application.DTOs.Question;
 using MindPulse.Core.Application.Interfaces.Services;
 using System.Threading.Tasks;
@@ -7,6 +8,8 @@ namespace MindPulse.WebApp.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+
+    [Authorize]
     public class QuestionController : ControllerBase
     {
         private readonly IQuestionService _questionService;

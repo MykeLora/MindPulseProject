@@ -121,6 +121,10 @@ namespace MindPulse.Infrastructure.Services
                 if (user == null)
                     return new ApiResponse<ConfirmationResponseDTO>(404, "User not found.");
 
+                var isPasswordValid = BCrypt.Net.BCrypt.Verify(changePasswordDto.CurrentPassword, user.PasswordHash);
+                if (!isPasswordValid)
+                    return new ApiResponse<ConfirmationResponseDTO>(401, "Invalid password.");
+
                 user.PasswordHash = changePasswordDto.NewPassword;
 
                 await _userRepository.ChangePasswordAsync(user);

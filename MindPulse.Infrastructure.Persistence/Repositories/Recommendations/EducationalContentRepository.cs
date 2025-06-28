@@ -14,11 +14,11 @@ namespace MindPulse.Infrastructure.Persistence.Repositories.Recommendations
             _context = context;
         }
 
-        public async Task<List<EducationalContent>> GetByCategoryIdsAsync(List<int> categoryIds)
+        public async Task<List<EducationalContent>> GetByCategoryIdAsync(int categoryId)
         {
             return await _context.EducationalContents
                 .Include(ec => ec.Category)
-                .Where(ec => categoryIds.Contains(ec.CategoryId))
+                .Where(ec => ec.CategoryId == categoryId)
                 .ToListAsync();
         }
 
@@ -28,7 +28,5 @@ namespace MindPulse.Infrastructure.Persistence.Repositories.Recommendations
                 .Include(ec => ec.Category)
                 .ToListAsync();
         }
-
     }
-
 }

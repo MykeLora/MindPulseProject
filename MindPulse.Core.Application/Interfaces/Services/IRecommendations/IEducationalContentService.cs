@@ -6,7 +6,7 @@ namespace MindPulse.Core.Application.Interfaces.Services.Recommendations
 {
     public interface IEducationalContentService : IGenericService<EducationalContentDTO, EducationalContentDTO, EducationalContent, EducationalContentDTO>
     {
-        Task<ApiResponse<List<EducationalContentDTO>>> GetByCategoryIdsAsync(List<int> categoryIds);
+        Task<ApiResponse<List<EducationalContentDTO>>> GetByCategoryIdAsync(int categoryId);
 
     }
 }

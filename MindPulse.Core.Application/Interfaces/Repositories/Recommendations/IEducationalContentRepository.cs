@@ -4,8 +4,8 @@ namespace MindPulse.Core.Application.Interfaces.Repositories.Recommendations
 {
     public interface IEducationalContentRepository : IGenericRepository<EducationalContent>
     {
-       Task<List<EducationalContent>> GetByCategoryIdsAsync(List<int> categoryIds);
-       Task<List<EducationalContent>> GetAllWithCategoryAsync();
+        Task<List<EducationalContent>> GetByCategoryIdAsync(int categoryId);
+        Task<List<EducationalContent>> GetAllWithCategoryAsync();
 
 
     }

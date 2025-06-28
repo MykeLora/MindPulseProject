@@ -33,9 +33,15 @@ namespace MindPulse.Core.Application.Services.Recommendations
             return new ApiResponse<List<EducationalContentDTO>>(200, result);
         }
 
-        public async Task<ApiResponse<List<EducationalContentDTO>>> GetByCategoryIdsAsync(List<int> categoryIds)
+        public async Task<ApiResponse<List<EducationalContentDTO>>> GetByCategoryIdAsync(int categoryId)
         {
-            var contents = await _educationalContentRepository.GetByCategoryIdsAsync(categoryIds);
+            var contents = await _educationalContentRepository.GetByCategoryIdAsync(categoryId);
+
+            // Validación: si no hay contenidos asociados a la categoría
+            if (contents == null || !contents.Any())
+            {
+                return new ApiResponse<List<EducationalContentDTO>>(404, $"No educational content found for category ID {categoryId}.");
+            }
 
             var result = contents.Select(ec => new EducationalContentDTO
             {

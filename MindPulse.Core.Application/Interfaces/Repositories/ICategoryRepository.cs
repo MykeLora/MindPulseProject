@@ -4,6 +4,7 @@ namespace MindPulse.Core.Application.Interfaces.Repositories
 {
     public interface ICategoryRepository : IGenericRepository<Category>
     {
-        
+        Task<Category?> GetByNameAsync(string name);
+
     }
 }

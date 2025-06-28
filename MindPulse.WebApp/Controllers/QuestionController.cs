@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace MindPulse.WebApp.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
 
-    [Authorize]
     public class QuestionController : ControllerBase
     {
         private readonly IQuestionService _questionService;

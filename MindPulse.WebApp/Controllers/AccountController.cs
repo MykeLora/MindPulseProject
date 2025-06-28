@@ -1,4 +1,5 @@
 ﻿using Azure;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc;
@@ -56,23 +57,6 @@ namespace MindPulse.WebApp.Controllers
         }
 
         /// <summary>
-        /// Cambiar la contraseña de un usuario
-        /// </summary>
-        [HttpPost("ChangePassword")]
-        public async Task<ActionResult<ApiResponse<ConfirmationResponseDTO>>> ChangePasswordAsync([FromBody] ChangePasswordDTO passwordDto)
-        {
-            if (passwordDto == null)
-                return BadRequest(new ApiResponse<ConfirmationResponseDTO>(400, "Datos inválidos para cambio de contraseña."));
-
-            var response = await _authService.ChangePasswordAsync(passwordDto);
-
-            if (response.StatusCode != 200)
-                return StatusCode(response.StatusCode, response);
-
-            return Ok(response);
-        }
-
-        /// <summary>
         /// Recuperar contraseña de usuario (Solicitud de enlace para restablecimiento)
         /// </summary>
         [HttpPost("ForgotPassword")]
@@ -101,6 +85,24 @@ namespace MindPulse.WebApp.Controllers
 
             var response = await _authService.ResetPasswordAsync(resetPasswordDto);
             return StatusCode(response.StatusCode, response);
+        }
+
+        /// <summary>
+        /// Cambiar la contraseña de un usuario
+        /// </summary>
+        [Authorize]
+        [HttpPost("ChangePassword")]
+        public async Task<ActionResult<ApiResponse<ConfirmationResponseDTO>>> ChangePasswordAsync([FromBody] ChangePasswordDTO passwordDto)
+        {
+            if (passwordDto == null)
+                return BadRequest(new ApiResponse<ConfirmationResponseDTO>(400, "Datos inválidos para cambio de contraseña."));
+
+            var response = await _authService.ChangePasswordAsync(passwordDto);
+
+            if (response.StatusCode != 200)
+                return StatusCode(response.StatusCode, response);
+
+            return Ok(response);
         }
     }
 }

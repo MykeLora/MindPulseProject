@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
 using MindPulse.Core.Application.DTOs.Auth;
 using MindPulse.Core.Application.DTOs.User;
 using MindPulse.Core.Application.Interfaces.Services;

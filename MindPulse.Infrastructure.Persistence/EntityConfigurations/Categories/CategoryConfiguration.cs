@@ -1,13 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using MindPulse.Core.Domain.Entities.Recommendations;
+using MindPulse.Core.Domain.Entities.Categories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MindPulse.Infrastructure.Persistence.EntityConfigurations.Recommdations
+
+namespace MindPulse.Infrastructure.Persistence.EntityConfigurations.Categories
 {
     public class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {

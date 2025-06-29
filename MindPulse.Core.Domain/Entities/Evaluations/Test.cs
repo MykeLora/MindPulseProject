@@ -1,5 +1,5 @@
 ﻿using MindPulse.Core.Domain.Commons;
-using MindPulse.Core.Domain.Entities.Recommendations;
+using MindPulse.Core.Domain.Entities.Categories;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -17,7 +17,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace MindPulse.Infrastructure.Services
+namespace MindPulse.Infrastructure.Persistence.Services
 {
     public class AuthService : IAuthService
     {

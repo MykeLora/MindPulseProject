@@ -162,7 +162,8 @@ namespace MindPulse.Infrastructure.Services
                         Hola {user.Name},<br>
                         Hemos recibido una solicitud para restablecer tu contraseña.<br><br>
                         Haz clic en el siguiente enlace para establecer una nueva contraseña (válido por 1 hora):<br>
-                        <a href="{resetLink}">Restablecer contraseña</a>
+                        <a href="{resetLink}">Restablecer contraseña</a><br><br>
+                        Si no solicitaste este cambio, por favor desestima este correo.<br><br>
                     """
                 };
 

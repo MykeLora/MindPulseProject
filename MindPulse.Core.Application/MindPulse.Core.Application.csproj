@@ -8,7 +8,6 @@
 
   <ItemGroup>
     <Folder Include="DTOs\Emotions\" />
-    <Folder Include="DTOs\Evaluations\" />
     <Folder Include="DTOs\Recommendations\" />
   </ItemGroup>
 

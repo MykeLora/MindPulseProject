@@ -11,6 +11,7 @@ using MindPulse.Core.Application.Services;
 using MindPulse.Core.Domain.Settings;
 using MindPulse.Infrastructure.Persistence.Context;
 using MindPulse.Infrastructure.Persistence.Repositories;
+using MindPulse.Infrastructure.Persistence.Services;
 using MindPulse.Infrastructure.Services;
 using MindPulse.Infrastructure.Shared;
 using MindPulse.Infrastructure.Shared.Services;
@@ -35,20 +36,20 @@ builder.Services.AddHttpContextAccessor();
 // Registrar AutoMapper con el perfil DefaultProfile
 builder.Services.AddAutoMapper(typeof(DefaultProfile));
 
-
+// Registrar Repositorios
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IQuestionaireRepository, QuestionnaireRepository>();
-
-
+builder.Services.AddScoped<IUserResponseRepository, UserResponseRepository>();
 
 // Registrar servicios específicos manualmente
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IQuestionnaireService, QuestionnaireService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IUserResponseService, UserResponseService>();
 
-
+// Registrar servicios de infraestructura
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {

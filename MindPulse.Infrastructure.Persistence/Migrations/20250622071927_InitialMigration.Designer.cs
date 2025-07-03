@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MindPulse.Infrastructure.Persistence.Context;
 
@@ -11,9 +12,11 @@ using MindPulse.Infrastructure.Persistence.Context;
 namespace MindPulse.Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20250622071927_InitialMigration")]
+    partial class InitialMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,41 +24,6 @@ namespace MindPulse.Infrastructure.Persistence.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("MindPulse.Core.Domain.Entities.Categories.Category", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("Created")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("CreatedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(300)
-                        .HasColumnType("nvarchar(300)");
-
-                    b.Property<DateTime?>("LastModified")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Categories", (string)null);
-                });
 
             modelBuilder.Entity("MindPulse.Core.Domain.Entities.Emotions.EmotionRecord", b =>
                 {
@@ -445,6 +413,41 @@ namespace MindPulse.Infrastructure.Persistence.Migrations
                     b.ToTable("UserResponses", (string)null);
                 });
 
+            modelBuilder.Entity("MindPulse.Core.Domain.Entities.Recommendations.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("nvarchar(300)");
+
+                    b.Property<DateTime?>("LastModified")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories", (string)null);
+                });
+
             modelBuilder.Entity("MindPulse.Core.Domain.Entities.Recommendations.EducationalContent", b =>
                 {
                     b.Property<int>("Id")
@@ -663,7 +666,7 @@ namespace MindPulse.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MindPulse.Core.Domain.Entities.Evaluations.Test", b =>
                 {
-                    b.HasOne("MindPulse.Core.Domain.Entities.Categories.Category", "Category")
+                    b.HasOne("MindPulse.Core.Domain.Entities.Recommendations.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -739,7 +742,7 @@ namespace MindPulse.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MindPulse.Core.Domain.Entities.Recommendations.EducationalContent", b =>
                 {
-                    b.HasOne("MindPulse.Core.Domain.Entities.Categories.Category", "Category")
+                    b.HasOne("MindPulse.Core.Domain.Entities.Recommendations.Category", "Category")
                         .WithMany("EducationalContents")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -750,7 +753,7 @@ namespace MindPulse.Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("MindPulse.Core.Domain.Entities.Recommendations.Recommendation", b =>
                 {
-                    b.HasOne("MindPulse.Core.Domain.Entities.Categories.Category", "Category")
+                    b.HasOne("MindPulse.Core.Domain.Entities.Recommendations.Category", "Category")
                         .WithMany("Recommendations")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -759,19 +762,12 @@ namespace MindPulse.Infrastructure.Persistence.Migrations
                     b.HasOne("MindPulse.Core.Domain.Entities.User", "User")
                         .WithMany("Recommendations")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("MindPulse.Core.Domain.Entities.Categories.Category", b =>
-                {
-                    b.Navigation("EducationalContents");
-
-                    b.Navigation("Recommendations");
                 });
 
             modelBuilder.Entity("MindPulse.Core.Domain.Entities.Evaluations.Question", b =>
@@ -791,6 +787,13 @@ namespace MindPulse.Infrastructure.Persistence.Migrations
                     b.Navigation("Questions");
 
                     b.Navigation("TestResults");
+                });
+
+            modelBuilder.Entity("MindPulse.Core.Domain.Entities.Recommendations.Category", b =>
+                {
+                    b.Navigation("EducationalContents");
+
+                    b.Navigation("Recommendations");
                 });
 
             modelBuilder.Entity("MindPulse.Core.Domain.Entities.User", b =>

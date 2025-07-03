@@ -12,7 +12,10 @@ using MindPulse.Core.Domain.Commons;
 using MindPulse.Infrastructure.Persistence.EntityConfigurations.Emotions;
 using MindPulse.Infrastructure.Persistence.EntityConfigurations.Recommdations;
 using MindPulse.Infrastructure.Persistence.EntityConfigurations.Evaluations;
+using MindPulse.Infrastructure.Persistence.EntityConfigurations.Categories;
+using MindPulse.Core.Domain.Entities.Categories;
 using MindPulse.Infrastructure.Persistence.EntityConfigurations;
+
 
 namespace MindPulse.Infrastructure.Persistence.Context
 {

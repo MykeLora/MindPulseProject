@@ -30,7 +30,13 @@ namespace MindPulse.Infrastructure.Persistence.EntityConfigurations.Recommdation
 
             builder.HasOne(r => r.User)
                 .WithMany(u => u.Recommendations)
-                .HasForeignKey(r => r.UserId);
+                .HasForeignKey(r => r.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(r => r.Category)
+                .WithMany()
+                .HasForeignKey(r => r.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 

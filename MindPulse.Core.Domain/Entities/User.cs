@@ -16,6 +16,7 @@ namespace MindPulse.Core.Domain.Entities
         public string? UserName { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
+        public string Type { get; set; } // Default type is "Standard User"
 
         public bool IsConfirmed { get; set; } = false;
         public bool IsSuspended { get; set; } = false;

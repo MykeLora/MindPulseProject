@@ -32,6 +32,13 @@ namespace MindPulse.WebApp.Controllers
             var response = await _service.GetByUserAsync(userId);
             return StatusCode(response.StatusCode, response);
         }
+
+        [HttpGet("free-responses")]
+        public async Task<IActionResult> GetFreeResponses(int userId)
+        {
+            var response = await _service.GetFreeResponsesAsync(userId);
+            return StatusCode(response.StatusCode, response);
+        }
     }
 
 }

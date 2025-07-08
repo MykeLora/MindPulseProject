@@ -11,6 +11,7 @@ namespace MindPulse.Core.Application.Interfaces.Repositories
     {
         Task<UserResponse> AddAsync(UserResponse response);
         Task<List<UserResponse>> GetByUserIdAsync(int userId);
+        Task<List<UserResponse>> GetFreeResponsesAsync(int userId);
 
     }
 }

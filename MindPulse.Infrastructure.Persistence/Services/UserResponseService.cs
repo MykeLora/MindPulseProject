@@ -35,5 +35,11 @@ namespace MindPulse.Infrastructure.Persistence.Services
             var list = await _repository.GetByUserIdAsync(userId);
             return new ApiResponse<List<UserResponsesDTO>>(200, _mapper.Map<List<UserResponsesDTO>>(list));
         }
+
+        public async Task<ApiResponse<List<UserResponsesDTO>>> GetFreeResponsesAsync(int userId)
+        {
+            var list = await _repository.GetFreeResponsesAsync(userId);
+            return new ApiResponse<List<UserResponsesDTO>>(200, _mapper.Map<List<UserResponsesDTO>>(list));
+        }
     }
 }

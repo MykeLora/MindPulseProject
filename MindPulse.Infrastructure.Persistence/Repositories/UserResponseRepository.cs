@@ -31,5 +31,12 @@ namespace MindPulse.Infrastructure.Persistence.Repositories
                 .Where(ur => ur.UserId == userId)
                 .ToListAsync();
         }
+
+        public async Task<List<UserResponse>> GetFreeResponsesAsync(int userId)
+        {
+            return await _context.UserResponses
+                .Where(ur => ur.UserId == userId && ur.TestResultId == null)
+                .ToListAsync();
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace MindPulse.Core.Domain.Entities
         public string? UserName { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
+        public string? Role { get; set; } // Default role is null for standard users.
 
         public bool IsConfirmed { get; set; } = false;
         public bool IsSuspended { get; set; } = false;

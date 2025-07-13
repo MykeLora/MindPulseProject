@@ -1,10 +1,13 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MindPulse.Core.Application.DTOs.Recommendations;
 using MindPulse.Core.Application.Interfaces.Services;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace MindPulse.WebApp.Controllers.Recommendations
 {
+    [Authorize]  
     [ApiController]
     [Route("api/recommendation")]
     public class RecommendationController : ControllerBase
@@ -17,6 +20,7 @@ namespace MindPulse.WebApp.Controllers.Recommendations
         }
 
         [HttpPost("create")]
+        [Authorize(Roles = "Admin")] 
         public async Task<IActionResult> Create([FromBody] RecommendationDTO dto)
         {
             var result = await _recommendationService.CreateAsync(dto);
@@ -38,19 +42,24 @@ namespace MindPulse.WebApp.Controllers.Recommendations
         }
 
         [HttpPut("update/{id}")]
+        [Authorize(Roles = "Admin")] 
         public async Task<IActionResult> Update(int id, [FromBody] RecommendationDTO dto)
         {
-            if (id != dto.Id) return BadRequest("ID mismatch");
+            if (id != dto.Id)
+                return BadRequest("ID mismatch");
+
             var result = await _recommendationService.UpdateAsync(dto);
             return StatusCode(result.StatusCode, result);
         }
 
         [HttpDelete("delete/{id}")]
+        [Authorize(Roles = "Admin")] 
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _recommendationService.DeleteAsync(id);
             return StatusCode(result.StatusCode, result);
         }
+
         [HttpGet("by-categories")]
         public async Task<IActionResult> GetByCategoryIds([FromQuery] List<int> categoryIds)
         {
@@ -60,7 +69,5 @@ namespace MindPulse.WebApp.Controllers.Recommendations
             var result = await _recommendationService.GetByCategoryIdsAsync(categoryIds);
             return StatusCode(result.StatusCode, result);
         }
-
-
     }
 }

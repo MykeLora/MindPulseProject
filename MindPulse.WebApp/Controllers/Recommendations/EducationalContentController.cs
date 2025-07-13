@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MindPulse.Core.Application.DTOs.Recommendations;
 using MindPulse.Core.Application.Interfaces.Services.Recommendations;
@@ -5,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace MindPulse.WebApp.Controllers.Recommendations
 {
+    [Authorize]
     [ApiController]
     [Route("api/educational-content")]
     public class EducationalContentController : ControllerBase
@@ -16,6 +18,7 @@ namespace MindPulse.WebApp.Controllers.Recommendations
             _educationalContentService = educationalContentService;
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] EducationalContentDTO dto)
         {
@@ -37,6 +40,7 @@ namespace MindPulse.WebApp.Controllers.Recommendations
             return StatusCode(result.StatusCode, result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("update/{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] EducationalContentDTO dto)
         {
@@ -45,18 +49,19 @@ namespace MindPulse.WebApp.Controllers.Recommendations
             return StatusCode(result.StatusCode, result);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("delete/{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             var result = await _educationalContentService.DeleteAsync(id);
             return StatusCode(result.StatusCode, result);
         }
+
         [HttpGet("by-category/{categoryId}")]
         public async Task<IActionResult> GetByCategoryId(int categoryId)
         {
             var result = await _educationalContentService.GetByCategoryIdAsync(categoryId);
             return StatusCode(result.StatusCode, result);
         }
-
     }
 }

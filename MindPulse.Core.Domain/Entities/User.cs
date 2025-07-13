@@ -33,8 +33,8 @@ namespace MindPulse.Core.Domain.Entities
 
         public enum RoleType
         {
-            Admin,
-            User
+            User,
+            Admin
         }
 
     }

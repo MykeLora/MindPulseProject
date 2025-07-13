@@ -76,6 +76,8 @@ builder.Services.AddControllers()
         options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     });
 
+
+
 // ------------------------------
 // 🔐 JWT AUTHENTICATION
 // ------------------------------

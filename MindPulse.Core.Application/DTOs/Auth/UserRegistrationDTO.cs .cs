@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MindPulse.Core.Domain.Entities.User;
 
 namespace MindPulse.Core.Application.DTOs.Auth
 {
@@ -28,6 +29,7 @@ namespace MindPulse.Core.Application.DTOs.Auth
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters.")]
         public string Password { get; set; }
 
-
+        [Required(ErrorMessage = "Must specify the type of user")]
+        public RoleType Role { get; set; }
     }
 }

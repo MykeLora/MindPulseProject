@@ -53,6 +53,7 @@ namespace MindPulse.WebApp.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost("Create-Questionaire")]
         public async Task<IActionResult> Create([FromBody] QuestionnaireCreateDTO dto)
         {
@@ -60,6 +61,7 @@ namespace MindPulse.WebApp.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut("Update-Questionaire")]
         public async Task<IActionResult> Update([FromBody] QuestionnaireUpdateDTO dto)
         {
@@ -67,6 +69,7 @@ namespace MindPulse.WebApp.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("RemoveById/{id}")]
         public async Task<IActionResult> Delete(int id)
         {

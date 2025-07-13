@@ -32,6 +32,12 @@ namespace MindPulse.Infrastructure.Persistence.EntityConfigurations
                    .HasMaxLength(150)
                    .IsRequired();
 
+
+            builder.Property(u => u.Role)
+                   .HasConversion<string>() 
+                   .HasMaxLength(20)        
+                   .IsRequired();
+
             builder.Property(u => u.PasswordHash)
                    .IsRequired();
 

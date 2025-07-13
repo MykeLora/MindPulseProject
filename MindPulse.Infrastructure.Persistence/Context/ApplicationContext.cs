@@ -53,6 +53,8 @@ namespace MindPulse.Infrastructure.Persistence.Context
             public DbSet<Questionnaire> Questionnaires { get; set; }
             public DbSet<Question> Questions { get; set; }
             public DbSet<AnswerOption> AnswerOptions { get; set; }
+            public DbSet<EmotionalHistory> EmotionalHistories { get; set; }
+            public DbSet<Test> tests { get; set; }
             public DbSet<TestResult> TestResults { get; set; }
             public DbSet<UserResponse> UserResponses { get; set; }
             public DbSet<Recommendation> Recommendations { get; set; }
@@ -63,7 +65,6 @@ namespace MindPulse.Infrastructure.Persistence.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Apply configurations from the assembly
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationContext).Assembly);
 
             modelBuilder.ApplyConfiguration(new EmotionalHistoryConfiguration());

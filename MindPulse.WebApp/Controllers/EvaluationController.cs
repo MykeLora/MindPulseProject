@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MindPulse.Core.Application.DTOs;
+using MindPulse.Core.Application.DTOs.Evaluations;
 using MindPulse.Core.Application.Interfaces.Services;
+using MindPulse.Infrastructure.Shared.Services;
 
 namespace MindPulse.WebApi.Controllers
 {
@@ -11,6 +13,7 @@ namespace MindPulse.WebApi.Controllers
     public class EvaluationController : ControllerBase
     {
         private readonly IEvaluationService _evaluationService;
+        private readonly IFreeTextOrchestrationService _freeTextOrchestrationService;
 
         public EvaluationController(IEvaluationService evaluationService)
         {
@@ -38,6 +41,18 @@ namespace MindPulse.WebApi.Controllers
         public async Task<IActionResult> EvaluateFreeText([FromBody] FreeTextEvaluationRequest request)
         {
             var result = await _evaluationService.EvaluateFreeTextAsync(request);
+            return Ok(result);
+        }
+
+        /// <summary>
+        /// Evalúa cada 5 mensajes escritos por el usuario.
+        /// </summary>
+        /// param name="userId">ID del usuario.</param>
+        /// <returns>Resultado del análisis emocional.</returns>
+        [HttpPost("chat-analysis")]
+        public async Task<IActionResult> AnalyzeChat([FromBody] ChatInputDTO input)
+        {
+            var result = await _freeTextOrchestrationService.AnalyzeAndStoreAsync(input.UserId, input.Text);
             return Ok(result);
         }
     }

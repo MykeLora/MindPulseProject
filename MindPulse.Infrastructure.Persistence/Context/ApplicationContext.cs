@@ -15,6 +15,7 @@ using MindPulse.Infrastructure.Persistence.EntityConfigurations.Evaluations;
 using MindPulse.Infrastructure.Persistence.EntityConfigurations.Categories;
 using MindPulse.Core.Domain.Entities.Categories;
 using MindPulse.Infrastructure.Persistence.EntityConfigurations;
+using MindPulse.Infrastructure.Persistence.Repositories;
 
 
 namespace MindPulse.Infrastructure.Persistence.Context
@@ -55,6 +56,7 @@ namespace MindPulse.Infrastructure.Persistence.Context
             public DbSet<AnswerOption> AnswerOptions { get; set; }
             public DbSet<TestResult> TestResults { get; set; }
             public DbSet<UserResponse> UserResponses { get; set; }
+            public DbSet<AiResponse> AiResponses { get; set; }
             public DbSet<Recommendation> Recommendations { get; set; }
             public DbSet<Category> Categories { get; set; }
             public DbSet<EducationalContent> EducationalContents { get; set; }

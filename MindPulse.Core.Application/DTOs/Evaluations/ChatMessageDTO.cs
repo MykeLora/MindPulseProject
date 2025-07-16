@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace MindPulse.Core.Application.DTOs.Evaluations
 {
-    public class ChatInputDTO
+    public class ChatMessageDTO
     {
-        public int UserId { get; set; }
-        public required string Text { get; set; }
+        public string Sender { get; set; } // "User" or "AI"
+        public string Message { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 }

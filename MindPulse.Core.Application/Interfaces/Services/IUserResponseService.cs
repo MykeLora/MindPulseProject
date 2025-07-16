@@ -10,7 +10,7 @@ namespace MindPulse.Core.Application.Interfaces.Services
 {
     public interface IUserResponseService
     {
-        Task<ApiResponse<UserResponsesDTO>> CreateAsync(UserResponseCreateDTO dto);
+        Task<ApiResponse<string>> CreateAsync(UserResponseCreateDTO dto);
         Task<ApiResponse<List<UserResponsesDTO>>> GetByUserAsync(int userId);
         Task<ApiResponse<List<UserResponsesDTO>>> GetFreeResponsesAsync(int userId);
     }

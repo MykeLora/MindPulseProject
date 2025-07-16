@@ -32,28 +32,16 @@ namespace MindPulse.WebApi.Controllers
             return Ok(result);
         }
 
-        /// <summary>
-        /// Evalúa una conversación de texto libre (entrada emocional).
-        /// </summary>
-        /// <param name="request">Mensajes escritos por el usuario.</param>
-        /// <returns>Resultado del análisis emocional.</returns>
-        [HttpPost("freetext")]
-        public async Task<IActionResult> EvaluateFreeText([FromBody] FreeTextEvaluationRequest request)
-        {
-            var result = await _evaluationService.EvaluateFreeTextAsync(request);
-            return Ok(result);
-        }
-
-        /// <summary>
-        /// Evalúa cada 5 mensajes escritos por el usuario.
-        /// </summary>
-        /// param name="userId">ID del usuario.</param>
-        /// <returns>Resultado del análisis emocional.</returns>
-        [HttpPost("chat-analysis")]
-        public async Task<IActionResult> AnalyzeChat([FromBody] ChatInputDTO input)
-        {
-            var result = await _freeTextOrchestrationService.AnalyzeAndStoreAsync(input.UserId, input.Text);
-            return Ok(result);
-        }
+        ///// <summary>
+        ///// Evalúa una conversación de texto libre (entrada emocional).
+        ///// </summary>
+        ///// <param name="request">Mensajes escritos por el usuario.</param>
+        ///// <returns>Resultado del análisis emocional.</returns>
+        //[HttpPost("freetext")]
+        //public async Task<IActionResult> EvaluateFreeText([FromBody] FreeTextEvaluationRequest request)
+        //{
+        //    var result = await _evaluationService.EvaluateFreeTextAsync(request);
+        //    return Ok(result);
+        //}
     }
 }

@@ -33,9 +33,11 @@ namespace MindPulse.Core.Application.Services
 
         public async Task<ApiResponse<List<AiResponseDTO>>> GetByUserIdAsync(int userId)
         {
-            var list = await _repository.GetByUserIdAsync(userId);
-            
-            return new ApiResponse<List<AiResponseDTO>>(200, _mapper.Map<List<AiResponseDTO>>(list));
+            var responses = await _repository.GetByUserIdAsync(userId);
+            var sorted = responses.OrderBy(r => r.Created).ToList();
+            var dtoList = _mapper.Map<List<AiResponseDTO>>(sorted);
+
+            return new ApiResponse<List<AiResponseDTO>>(200, dtoList);
         }
     }
 }

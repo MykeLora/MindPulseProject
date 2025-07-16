@@ -14,5 +14,6 @@ namespace MindPulse.Core.Application.DTOs.Evaluations
         public int? AnswerOptionId { get; set; }
         public string? FreeResponse { get; set; }
         public int UserId { get; set; }
+        public DateTime Created { get; set; }
     }
 }

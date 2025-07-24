@@ -19,6 +19,13 @@ namespace MindPulse.WebApp.Controllers
             _service = service;
         }
 
+        [HttpPost]
+        public async Task<IActionResult> Create([FromBody] UserResponseCreateDTO dto)
+        {
+            var response = await _service.CreateAsync(dto);
+            return StatusCode(response.StatusCode, response);
+        }
+
         [HttpGet("by-user/{userId}")]
         public async Task<IActionResult> GetByUser(int userId)
         {
@@ -33,12 +40,6 @@ namespace MindPulse.WebApp.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
-        [HttpPost("chat-service")]
-        public async Task<IActionResult> Create([FromBody] UserResponseCreateDTO dto)
-        {
-            var response = await _service.CreateAsync(dto);
-            return StatusCode(response.StatusCode, response);
-        }
     }
 
 }

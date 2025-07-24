@@ -12,6 +12,6 @@ namespace MindPulse.Core.Application.Interfaces.Services
     public interface IFreeTextOrchestrationService
     {
         Task<ApiResponse<List<ChatMessageDTO>>> GetFullChatAsync(int userId);
-        Task<EvaluationResult> AnalyzeAndStoreAsync(int userId, string input);
+        Task<string> AnalyzeAndStoreAsync(int userId, string input);
     }
 }

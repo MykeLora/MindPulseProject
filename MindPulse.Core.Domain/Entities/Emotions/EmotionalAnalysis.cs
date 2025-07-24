@@ -13,8 +13,8 @@ namespace MindPulse.Core.Domain.Entities.Emotions
         public string DetectedEmotion { get; set; }
         public float Confidence { get; set; }
         public DateTime AnalysisDate { get; set; }
-
         public int UserId { get; set; }
         public User User { get; set; }
+        public string Summary { get; set; }
     }
 }

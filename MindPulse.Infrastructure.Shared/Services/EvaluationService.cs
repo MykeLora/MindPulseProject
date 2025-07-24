@@ -13,10 +13,6 @@ using MindPulse.Core.Application.Interfaces.Services;
 
 namespace MindPulse.Infrastructure.Shared.Services
 {
-
-    // TODO: Guardar resultado en EvaluationRequest y Recommendation (Se necesita conexion a cuestionarios aún)
-    // await _evaluationRepository.AddAsync(new Evaluation { ... });
-
     public class EvaluationService : IEvaluationService
     {
         private readonly IOpenAiService _openAiService;
@@ -28,6 +24,11 @@ namespace MindPulse.Infrastructure.Shared.Services
             _context = context;
         }
 
+        ///// <summary>
+        ///// Evalúa un test hecho por el usuario.
+        ///// </summary>
+        ///// <param name="request">Test hecho por el usuario.</param>
+        ///// <returns>Resultado del análisis emocional.</returns>
         public async Task<EvaluationResult> EvaluateTestAsync(EvaluationRequest request)
         {
             var prompt = BuildPromptFromTest(request);
@@ -71,33 +72,6 @@ namespace MindPulse.Infrastructure.Shared.Services
             return parsed;
         }
 
-        public async Task<EvaluationResult> EvaluateFreeTextAsync(FreeTextEvaluationRequest request)
-        {
-            var combinedText = string.Join("\n", request.Messages);
-
-            var prompt = $"Actúa como un psicólogo. Analiza el siguiente texto compuesto por varias entradas del usuario:\n\n{combinedText}\n\n" +
-                          "Determina si hay signos de ansiedad, depresión u otro trastorno emocional. Devuelve un nivel de alerta (bajo, moderado, alto), un resumen breve y una recomendación.";
-
-            var rawResponse = await _openAiService.AnalyzeTextAsync(prompt);
-
-            var parsed = ParseEvaluationResponse(rawResponse, "libre");
-
-            // Se guarda el resultado en la base de datos
-            var entity = new EmotionalAnalysis
-            {
-                InputText = combinedText,
-                DetectedEmotion = parsed.Level,
-                Confidence = 0.85f, // Simulación de confianza
-                AnalysisDate = DateTime.UtcNow,
-                UserId = request.UserId
-            };
-
-            await _context.EmotionAnalyses.AddAsync(entity);
-            await _context.SaveChangesAsync();
-
-            return parsed;
-        }
-
         private string BuildPromptFromTest(EvaluationRequest request)
         {
             var formatted = string.Join("\n", request.Answers.Select((qa, i) => $"{i + 1}. {qa.Question}: {qa.Answer}"));
@@ -106,14 +80,74 @@ namespace MindPulse.Infrastructure.Shared.Services
                     "Responde con nivel de alerta, resumen breve y recomendación para el usuario.";
         }
 
-        private EvaluationResult ParseEvaluationResponse(string raw, string mode)
+
+        ///// <summary>
+        ///// Evalúa un entradas libres del usuario.
+        ///// </summary>
+        ///// <param name="request">Mensajes enviados por el usuario.</param>
+        ///// <returns>Resultado del análisis emocional.</returns>
+        public async Task<EvaluationResult> EvaluateFreeTextAsync(FreeTextEvaluationRequest request)
         {
+            var combinedText = string.Join("\n", request.Messages);
+            var lastMessage = request.Messages.LastOrDefault() ?? "";
+
+            var prompt = $"""
+                        Actúa como un psicólogo experto en análisis emocional.
+
+                        Analiza el siguiente texto compuesto por varias entradas del usuario:
+
+                        {combinedText}
+
+                        Identifica si hay signos de ansiedad, depresión u otro trastorno emocional. Devuelve lo siguiente:
+
+                        1. Nivel de alerta (Bajo, Moderado, Alto).
+                        2. Un resumen breve de tu análisis.
+                        3. Una puntuación de confianza del 0 al 100% que represente cuán seguro estás de tu evaluación.
+
+                        Formato de respuesta:
+                        Nivel: ...
+                        Resumen: ...
+                        Confianza: ...
+                        """;
+
+            var rawResponse = await _openAiService.AnalyzeTextAsync(prompt);
+
+            var parsed = ParseEvaluationResponse(rawResponse, "libre");
+
+            // Se guarda el resultado en la base de datos
+            var entity = new EmotionalAnalysis
+            {
+                InputText = lastMessage,
+                DetectedEmotion = parsed.Level,
+                Confidence = parsed.Confidence,
+                AnalysisDate = DateTime.UtcNow,
+                UserId = request.UserId,
+                Summary = parsed.Summary
+            };
+
+            await _context.EmotionAnalyses.AddAsync(entity);
+            await _context.SaveChangesAsync();
+
+            return parsed;
+        }
+
+        private EvaluationResult ParseEvaluationResponse(string response, string category)
+        {
+            var lines = response.Split('\n');
+            var level = lines.FirstOrDefault(l => l.ToLower().Contains("nivel"))?.Split(':').Last().Trim();
+            var summary = lines.FirstOrDefault(l => l.ToLower().Contains("resumen"))?.Split(':').Last().Trim();
+            var recommendation = lines.FirstOrDefault(l => l.ToLower().Contains("recomendación"))?.Split(':').Last().Trim();
+            var confidenceStr = lines.FirstOrDefault(l => l.ToLower().Contains("confianza"))?.Split(':').Last().Trim();
+
+            float.TryParse(confidenceStr?.Replace("%", "").Trim(), out float confidence);
+            if (confidence == 0) confidence = 60f; // fallback
+
             return new EvaluationResult
             {
-                Category = mode == "test" ? "Basado en categoría seleccionada" : "Detección Libre",
-                Level = "Moderado",
-                Summary = raw.Length > 150 ? raw.Substring(0, 150) + "..." : raw,
-                Recommendation = "Refuerza tu rutina de descanso y considera hablar con un profesional si los síntomas persisten."
+                Category = category,
+                Level = level ?? "Bajo",
+                Summary = summary ?? "",
+                Confidence = confidence / 100f // convertir a 0.0–1.0
             };
         }
 

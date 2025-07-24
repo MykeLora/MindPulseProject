@@ -5,6 +5,9 @@ using MindPulse.Core.Application.DTOs.Recommendations;
 using MindPulse.Core.Application.Interfaces;
 using MindPulse.Core.Application.Interfaces.Services;
 using MindPulse.Core.Application.Wrappers;
+using MindPulse.Core.Domain.Entities.Emotions;
+using MindPulse.Core.Domain.Entities.Evaluations;
+using MindPulse.Infrastructure.Persistence.Context;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +24,7 @@ namespace MindPulse.Infrastructure.Shared.Services
         private readonly IEvaluationService _evaluationService;
         private readonly IRecommendationService _recommendationService;
         private readonly IMapper _mapper;
+        private readonly ApplicationContext _context;
 
         public FreeTextOrchestrationService(
         IUserResponseService userResponseService,
@@ -28,7 +32,8 @@ namespace MindPulse.Infrastructure.Shared.Services
         IOpenAiService openAiService,
         IEvaluationService evaluationService,
         IRecommendationService recommendationService,
-        IMapper mapper)
+        IMapper mapper,
+        ApplicationContext context)
         {
             _userResponseService = userResponseService;
             _aiResponseService = aiResponseService;
@@ -36,6 +41,7 @@ namespace MindPulse.Infrastructure.Shared.Services
             _evaluationService = evaluationService;
             _recommendationService = recommendationService;
             _mapper = mapper;
+            _context = context;
         }
 
         public async Task<ApiResponse<List<ChatMessageDTO>>> GetFullChatAsync(int userId)
@@ -70,42 +76,35 @@ namespace MindPulse.Infrastructure.Shared.Services
             return new ApiResponse<List<ChatMessageDTO>>(200, ordered);
         }
 
-        public async Task<EvaluationResult> AnalyzeAndStoreAsync(int userId, string input)
+        public async Task<string> AnalyzeAndStoreAsync(int userId, string input)
         {
             // Step 1: Saving the User entry and the AI response
-            await _userResponseService.CreateAsync(new UserResponseCreateDTO
+            var aiResponse = await _userResponseService.CreateAsync(new UserResponseCreateDTO
             {
                 UserId = userId,
                 FreeResponse = input
             });
 
-            // Step 2: Getting last N messages (last 5 in this case)
-            var allMessages = await _userResponseService.GetFreeResponsesAsync(userId);
-            var recentMessages = allMessages.Data?
+            // Step 2: Sending last 20 messages to the AI for evaluation
+            var userResponses = await _userResponseService.GetFreeResponsesAsync(userId);
+            var recentMessages = userResponses.Data?
                 .Select(m => m.FreeResponse)
                 .Where(m => !string.IsNullOrEmpty(m))
-                .TakeLast(5)
+                .TakeLast(20)
                 .ToList() ?? new List<string>();
 
-            if (!recentMessages.Any())
-                return new EvaluationResult
-                {
-                    Category = "Detección Libre",
-                    Level = "Bajo",
-                    Summary = "No se encontraron suficientes mensajes para realizar un análisis.",
-                    Recommendation = "Continúa compartiendo cómo te sientes para brindarte una mejor evaluación."
-                };
-
-            var combined = string.Join("\n", recentMessages);
-
             // Step 3: Evaluating the combined messages 
-            var evaluation = await _evaluationService.EvaluateFreeTextAsync(new FreeTextEvaluationRequest
+            if (recentMessages.Any())
             {
-                UserId = userId,
-                Messages = recentMessages
-            });
+                await _evaluationService.EvaluateFreeTextAsync(new FreeTextEvaluationRequest
+                {
+                    UserId = userId,
+                    Messages = recentMessages
+                });
+            }
 
-            return evaluation;
+            // Step 4: Returning the AI response
+            return aiResponse.Data;
         }
     }  
 }

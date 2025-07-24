@@ -91,8 +91,12 @@ namespace MindPulse.Infrastructure.Persistence.Services
                 if (!isPasswordValid)
                     return new ApiResponse<LoginResponseDTO>(401, "Invalid email or password.");
 
-                var token = _jwtService.GenerateToken(user.Id.ToString(), user.Email, new List<string>());
-
+                // Generar el token JWT con el rol del usuario
+                var token = _jwtService.GenerateToken(
+                    user.Id.ToString(),
+                    user.Email,
+                    new List<string> { user.Role.ToString() } // Rol como claim
+                );
 
                 var loginResponse = new LoginResponseDTO
                 {
@@ -103,8 +107,6 @@ namespace MindPulse.Infrastructure.Persistence.Services
                 };
 
                 return new ApiResponse<LoginResponseDTO>(200, loginResponse);
-
-
             }
             catch (Exception ex)
             {
@@ -112,6 +114,8 @@ namespace MindPulse.Infrastructure.Persistence.Services
                 return new ApiResponse<LoginResponseDTO>(500, $"Unexpected error: {ex.Message}");
             }
         }
+
+
 
         public async Task<ApiResponse<ConfirmationResponseDTO>> ChangePasswordAsync(ChangePasswordDTO changePasswordDto)
         {

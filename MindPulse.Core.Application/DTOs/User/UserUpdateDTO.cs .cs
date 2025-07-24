@@ -4,6 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static MindPulse.Core.Domain.Entities.User;
 
 namespace MindPulse.Core.Application.DTOs.Auth
 {
@@ -27,6 +28,8 @@ namespace MindPulse.Core.Application.DTOs.Auth
         public string Email { get; set; }
         public DateTime? LastModified { get; set; } = DateTime.UtcNow;
 
+        [Required(ErrorMessage = "Must specify the type of user")]
+        public RoleType Role { get; set; }
 
     }
 }

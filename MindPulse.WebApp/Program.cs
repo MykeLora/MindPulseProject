@@ -1,6 +1,4 @@
-using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -11,7 +9,6 @@ using MindPulse.Core.Application.Interfaces.Services.Recommendations;
 using MindPulse.Core.Application.Mappings;
 using MindPulse.Core.Application.Services;
 using MindPulse.Core.Application.Services.Recommendations;
-using MindPulse.Core.Domain.Entities.Categories;
 using MindPulse.Core.Domain.Settings;
 using MindPulse.Infrastructure.Persistence.Context;
 using MindPulse.Infrastructure.Persistence.Repositories;
@@ -23,23 +20,28 @@ using MindPulse.WebApp;
 using System.Text;
 using System.Text.Json.Serialization;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// ------------------------------
+// 🔗 DATABASE
+// ------------------------------
 builder.Services.AddDbContext<ApplicationContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// Service Email
+// ------------------------------
+// 📧 EMAIL CONFIG
+// ------------------------------
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 
-// Registrar HttpContextAccessor
+// ------------------------------
+// 🧭 UTILS
+// ------------------------------
 builder.Services.AddHttpContextAccessor();
-
-// Registrar AutoMapper con el perfil DefaultProfile
 builder.Services.AddAutoMapper(typeof(DefaultProfile));
 
-// Registrar Repositorios
+// ------------------------------
+// 📦 REPOSITORIES
+// ------------------------------
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IQuestionRepository, QuestionRepository>();
 builder.Services.AddScoped<IQuestionaireRepository, QuestionnaireRepository>();
@@ -49,7 +51,9 @@ builder.Services.AddScoped<IRecommendationRepository, RecommendationRepository>(
 builder.Services.AddScoped<IEducationalContentRepository, EducationalContentRepository>();
 builder.Services.AddScoped<IAiResponseRepository, AiResponseRepository>();
 
-// Registrar servicios específicos manualmente
+// ------------------------------
+// 💼 SERVICES
+// ------------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IQuestionnaireService, QuestionnaireService>();
@@ -61,7 +65,14 @@ builder.Services.AddScoped<IEducationalContentService, EducationalContentService
 builder.Services.AddScoped<IAiResponseService, AiResponseService>();
 builder.Services.AddScoped<IFreeTextOrchestrationService, FreeTextOrchestrationService>();
 
-// Registrar servicios de infraestructura
+// ------------------------------
+// 🤝 SHARED DEPENDENCIES
+// ------------------------------
+builder.Services.AddMindPulseDependencies(builder.Configuration);
+
+// ------------------------------
+// 🎯 JSON OPTIONS
+// ------------------------------
 builder.Services.AddControllers()
     .AddJsonOptions(options =>
     {
@@ -69,14 +80,12 @@ builder.Services.AddControllers()
     });
 
 
-// Registrar servicios compartidos (como los definidos en Shared)
-builder.Services.AddMindPulseDependencies(builder.Configuration);
 
-builder.Services.AddControllers();
-
-// Configurar autenticación JWT
-builder.Services.AddAuthentication("JwtBearer")
-    .AddJwtBearer("JwtBearer", options =>
+// ------------------------------
+// 🔐 JWT AUTHENTICATION
+// ------------------------------
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
     {
         var config = builder.Configuration;
         options.TokenValidationParameters = new TokenValidationParameters
@@ -92,9 +101,18 @@ builder.Services.AddAuthentication("JwtBearer")
         };
     });
 
-builder.Services.AddAuthorization();
+// ------------------------------
+// 🛡️ ROLE-BASED AUTHORIZATION
+// ------------------------------
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("UserOnly", policy => policy.RequireRole("User"));
+});
 
-// Configurar Swagger/OpenAPI con autenticación
+// ------------------------------
+// 🧪 SWAGGER
+// ------------------------------
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddSwaggerGen(c =>
@@ -105,7 +123,6 @@ builder.Services.AddSwaggerGen(c =>
         Version = "v1"
     });
 
-    // Configuración para JWT
     c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
     {
         Name = "Authorization",
@@ -113,7 +130,7 @@ builder.Services.AddSwaggerGen(c =>
         Scheme = "Bearer",
         BearerFormat = "JWT",
         In = ParameterLocation.Header,
-        Description = "Introduce el token JWT con el formato: bearer {tu_token}"
+        Description = "Introduce el token JWT con el formato: Bearer {tu_token}"
     });
 
     c.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -127,16 +144,16 @@ builder.Services.AddSwaggerGen(c =>
                     Id = "Bearer"
                 }
             },
-
-            new string[] {}
+            Array.Empty<string>()
         }
     });
 });
 
-
+// ------------------------------
+// 🚀 BUILD APP
+// ------------------------------
 var app = builder.Build();
 
-// Configurar middleware HTTP
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -144,7 +161,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
 app.UseAuthentication();
 app.UseAuthorization();
+
 app.MapControllers();
+
 app.Run();

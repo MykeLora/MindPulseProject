@@ -16,7 +16,7 @@ namespace MindPulse.Core.Domain.Entities
         public string? UserName { get; set; }
         public string Email { get; set; }
         public string PasswordHash { get; set; }
-        public string? Role { get; set; } // Default role is null for standard users.
+        public RoleType Role { get; set; } 
 
         public bool IsConfirmed { get; set; } = false;
         public bool IsSuspended { get; set; } = false;
@@ -30,6 +30,14 @@ namespace MindPulse.Core.Domain.Entities
         public ICollection<Recommendation> Recommendations { get; set; }
         public ICollection<EmotionRecord> EmotionalRecords { get; set; }
         public ICollection<UserResponse> UserResponses { get; set; }
+
+        public enum RoleType
+        {
+            User,
+            Admin
+        }
+
     }
+
 
 }

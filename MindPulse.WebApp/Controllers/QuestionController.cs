@@ -9,7 +9,6 @@ namespace MindPulse.WebApp.Controllers
     [Authorize]
     [ApiController]
     [Route("api/[controller]")]
-
     public class QuestionController : ControllerBase
     {
         private readonly IQuestionService _questionService;
@@ -54,6 +53,7 @@ namespace MindPulse.WebApp.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] QuestionCreateDTO dto)
         {
@@ -61,6 +61,7 @@ namespace MindPulse.WebApp.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPut]
         public async Task<IActionResult> Update([FromBody] QuestionUpdateDTO dto)
         {
@@ -68,6 +69,7 @@ namespace MindPulse.WebApp.Controllers
             return StatusCode(response.StatusCode, response);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

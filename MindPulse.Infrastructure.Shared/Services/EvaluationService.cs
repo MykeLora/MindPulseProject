@@ -136,7 +136,6 @@ namespace MindPulse.Infrastructure.Shared.Services
             var lines = response.Split('\n');
             var level = lines.FirstOrDefault(l => l.ToLower().Contains("nivel"))?.Split(':').Last().Trim();
             var summary = lines.FirstOrDefault(l => l.ToLower().Contains("resumen"))?.Split(':').Last().Trim();
-            var recommendation = lines.FirstOrDefault(l => l.ToLower().Contains("recomendación"))?.Split(':').Last().Trim();
             var confidenceStr = lines.FirstOrDefault(l => l.ToLower().Contains("confianza"))?.Split(':').Last().Trim();
 
             float.TryParse(confidenceStr?.Replace("%", "").Trim(), out float confidence);

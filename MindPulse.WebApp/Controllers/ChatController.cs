@@ -54,7 +54,7 @@ namespace MindPulse.WebApi.Controllers
                 alert = true,
                 emotion = latest.DetectedEmotion,
                 confidence = latest.Confidence,
-                summary = latest.InputText,
+                summary = latest.Summary,
                 date = latest.AnalysisDate
             });
         }

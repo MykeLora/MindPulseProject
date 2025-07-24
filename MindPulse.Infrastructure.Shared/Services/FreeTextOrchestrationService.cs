@@ -85,25 +85,31 @@ namespace MindPulse.Infrastructure.Shared.Services
                 FreeResponse = input
             });
 
-            // Step 2: Sending last 20 messages to the AI for evaluation
+            // Step 2: Verifying if the user has already sent 20 new messages. 
             var userResponses = await _userResponseService.GetFreeResponsesAsync(userId);
-            var recentMessages = userResponses.Data?
+            var count = userResponses.Data?.Count ?? 0;
+
+            if (count % 20 == 0) 
+            {
+                // Step 2.1: If the user has sent 20 new messages,
+                // we get the last 20 messages to the AI and send them for evaluation.
+                var recentMessages = userResponses.Data?
                 .Select(m => m.FreeResponse)
                 .Where(m => !string.IsNullOrEmpty(m))
                 .TakeLast(20)
                 .ToList() ?? new List<string>();
 
-            // Step 3: Evaluating the combined messages 
-            if (recentMessages.Any())
-            {
-                await _evaluationService.EvaluateFreeTextAsync(new FreeTextEvaluationRequest
+                if (recentMessages.Any())
                 {
-                    UserId = userId,
-                    Messages = recentMessages
-                });
+                    await _evaluationService.EvaluateFreeTextAsync(new FreeTextEvaluationRequest
+                    {
+                        UserId = userId,
+                        Messages = recentMessages
+                    });
+                }
             }
 
-            // Step 4: Returning the AI response
+            // Step 3: Returning the AI response
             return aiResponse.Data;
         }
     }  

@@ -46,7 +46,7 @@ namespace MindPulse.WebApi.Controllers
                 return BadRequest(new { error = "El texto no puede estar vacío." });
 
             var aiResponse = await _freeTextOrchestrationService.AnalyzeAndStoreAsync(input.UserId, input.FreeResponse);
-            return Ok(new ApiResponse<string>(200, aiResponse));
+            return Ok(new ApiResponse<string>(200, data: aiResponse));
         }
     }
 }

@@ -23,6 +23,11 @@ namespace MindPulse.Core.Application.Mappings
             CreateMap<UserResponseCreateDTO, UserResponse>();
             #endregion
 
+            #region AiResponse Mappings
+            CreateMap<AiResponse, AiResponseDTO>().ReverseMap();
+            CreateMap<AiResponseCreateDTO, AiResponse>();
+            #endregion
+
             #region User Mappings
 
             CreateMap<User, UserResponseDTO>();

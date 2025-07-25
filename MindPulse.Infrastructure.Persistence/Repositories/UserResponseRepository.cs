@@ -36,6 +36,7 @@ namespace MindPulse.Infrastructure.Persistence.Repositories
         {
             return await _context.UserResponses
                 .Where(ur => ur.UserId == userId && ur.TestResultId == null)
+                .OrderBy(x => x.Created)
                 .ToListAsync();
         }
     }

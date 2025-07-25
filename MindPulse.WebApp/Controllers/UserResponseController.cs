@@ -39,6 +39,7 @@ namespace MindPulse.WebApp.Controllers
             var response = await _service.GetFreeResponsesAsync(userId);
             return StatusCode(response.StatusCode, response);
         }
+
     }
 
 }

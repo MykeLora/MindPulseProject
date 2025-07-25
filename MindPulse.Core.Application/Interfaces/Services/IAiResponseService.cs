@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 
 namespace MindPulse.Core.Application.Interfaces.Services
 {
-    public interface IUserResponseService
+    public interface IAiResponseService
     {
-        Task<ApiResponse<string>> CreateAsync(UserResponseCreateDTO dto);
-        Task<ApiResponse<List<UserResponsesDTO>>> GetByUserAsync(int userId);
-        Task<ApiResponse<List<UserResponsesDTO>>> GetFreeResponsesAsync(int userId);
+        Task<ApiResponse<AiResponseDTO>> CreateAsync(AiResponseCreateDTO aiResponseCreateDto);
+        Task<ApiResponse<List<AiResponseDTO>>> GetByUserIdAsync(int userId);
     }
 }

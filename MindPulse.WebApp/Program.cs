@@ -49,6 +49,7 @@ builder.Services.AddScoped<IUserResponseRepository, UserResponseRepository>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IRecommendationRepository, RecommendationRepository>();
 builder.Services.AddScoped<IEducationalContentRepository, EducationalContentRepository>();
+builder.Services.AddScoped<IAiResponseRepository, AiResponseRepository>();
 
 // ------------------------------
 // 💼 SERVICES
@@ -61,6 +62,8 @@ builder.Services.AddScoped<IUserResponseService, UserResponseService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IRecommendationService, RecommendationService>();
 builder.Services.AddScoped<IEducationalContentService, EducationalContentService>();
+builder.Services.AddScoped<IAiResponseService, AiResponseService>();
+builder.Services.AddScoped<IFreeTextOrchestrationService, FreeTextOrchestrationService>();
 
 // ------------------------------
 // 🤝 SHARED DEPENDENCIES

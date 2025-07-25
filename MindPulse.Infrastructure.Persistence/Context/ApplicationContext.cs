@@ -68,6 +68,7 @@ namespace MindPulse.Infrastructure.Persistence.Context
             public DbSet<Test> tests { get; set; }
             public DbSet<TestResult> TestResults { get; set; }
             public DbSet<UserResponse> UserResponses { get; set; }
+            public DbSet<AiResponse> AiResponses { get; set; }
             public DbSet<Recommendation> Recommendations { get; set; }
             public DbSet<Category> Categories { get; set; }
             public DbSet<EducationalContent> EducationalContents { get; set; }

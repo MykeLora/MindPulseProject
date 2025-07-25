@@ -17,11 +17,11 @@ namespace MindPulse.WebApi.Controllers
             _openAiService = openAiService;
         }
 
-        [HttpPost("analyze")]
-        public async Task<IActionResult> AnalyzeEmotion([FromBody] EmotionRequest request)
-        {
-            var result = await _openAiService.AnalyzeTextAsync(request.Text);
-            return Ok(result);
-        }
+        //[HttpPost("analyze")]
+        //public async Task<IActionResult> AnalyzeEmotion([FromBody] EmotionRequest request)
+        //{
+        //    var result = await _openAiService.AnalyzeTextAsync(request.Text);
+        //    return Ok(result);
+        //}
     }
 }

@@ -24,6 +24,7 @@ namespace MindPulse.Infrastructure.Persistence.Context
     public class ApplicationContext : DbContext
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
+
         public ApplicationContext(DbContextOptions<ApplicationContext> options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
             _httpContextAccessor = httpContextAccessor ?? throw new ArgumentNullException(nameof(httpContextAccessor));
@@ -33,27 +34,25 @@ namespace MindPulse.Infrastructure.Persistence.Context
         {
             var userId = _httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (string.IsNullOrEmpty(userId))
-                throw new Exception("No se pudo identificar al usuario logueado");
-
             foreach (var entry in ChangeTracker.Entries<BaseEntity>())
             {
                 switch (entry.State)
                 {
                     case EntityState.Added:
                         entry.Entity.Created = DateTime.UtcNow;
-                        entry.Entity.CreatedBy = userId;
+                        entry.Entity.CreatedBy = userId ?? "System"; 
                         break;
 
                     case EntityState.Modified:
                         entry.Entity.LastModified = DateTime.UtcNow;
-                        entry.Entity.LastModifiedBy = userId;
+                        entry.Entity.LastModifiedBy = userId ?? "System"; 
                         break;
                 }
             }
 
             return base.SaveChangesAsync(cancellationToken);
         }
+
 
 
         // DbSet properties for your entities

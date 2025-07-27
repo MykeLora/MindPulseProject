@@ -30,6 +30,6 @@ namespace MindPulse.Core.Application.DTOs.Auth
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Must specify the type of user")]
-        public RoleType Role { get; set; }
+        public RoleType Rol { get; set; }
     }
 }

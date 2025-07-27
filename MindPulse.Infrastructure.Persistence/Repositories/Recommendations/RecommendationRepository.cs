@@ -17,13 +17,11 @@ namespace MindPulse.Infrastructure.Persistence.Repositories.Recommendations
             _context = context;  // asigna el contexto recibido
         }
 
-        public async Task<List<Recommendation>> GetByCategoryIdsAsync(List<int> categoryIds)
+        public Task<List<Recommendation>> GetByCategoryIdAsync(int categoryId)
         {
-            return await _context.Recommendations
-                .Include(r => r.Category)
-                .Where(r => categoryIds.Contains(r.CategoryId))
-                .ToListAsync();
+            throw new NotImplementedException();
         }
+
 
     }
 }

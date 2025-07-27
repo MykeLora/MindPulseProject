@@ -60,14 +60,14 @@ namespace MindPulse.WebApp.Controllers.Recommendations
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpGet("by-categories")]
-        public async Task<IActionResult> GetByCategoryIds([FromQuery] List<int> categoryIds)
-        {
-            if (categoryIds == null || categoryIds.Count == 0)
-                return BadRequest("Debe especificar al menos una categoría");
+        //[HttpGet("by-categories")]
+        //public async Task<IActionResult> GetByCategoryIds([FromQuery] List<int> categoryIds)
+        //{
+        //    if (categoryIds == null || categoryIds.Count == 0)
+        //        return BadRequest("Debe especificar al menos una categoría");
 
-            var result = await _recommendationService.GetByCategoryIdsAsync(categoryIds);
-            return StatusCode(result.StatusCode, result);
-        }
+        //    var result = await _recommendationService.GetByCategoryIdsAsync(categoryIds);
+        //    return StatusCode(result.StatusCode, result);
+        //}
     }
 }

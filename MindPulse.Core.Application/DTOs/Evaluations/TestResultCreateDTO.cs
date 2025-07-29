@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace MindPulse.Core.Application.DTOs.Evaluations
+{
+    public class TestResultCreateDTO
+    {
+        public string Summary { get; set; }
+        public float SeverityScore { get; set; }
+        public int QuestionnaireId { get; set; }
+        public int UserId { get; set; }
+    }
+}

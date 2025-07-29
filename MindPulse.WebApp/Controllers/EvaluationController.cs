@@ -27,12 +27,29 @@ namespace MindPulse.WebApi.Controllers
         /// </summary>
         /// <param name="request">Datos del test emocional.</param>
         /// <returns>Resultado del análisis emocional.</returns>
-        //[HttpPost("test")]
-        //public async Task<IActionResult> EvaluateTest([FromBody] EvaluationRequest request)
-        //{
-        //    var result = await _evaluationService.EvaluateTestAsync(request);
-        //    return Ok(result);
-        //}
+        [HttpPost("test-(prueba)")]
+        public async Task<IActionResult> EvaluateTest([FromBody] EvaluationRequest request)
+        {
+            var result = await _evaluationService.EvaluateTestAsync(request);
+            return Ok(result);
+        }
+
+        [HttpPost("submit-test-(prueba)")]
+        public IActionResult SubmitTest([FromBody] TestResponsesDTO dto)
+        {
+            if (dto.Answers == null || !dto.Answers.Any())
+                return BadRequest("Debes enviar al menos una respuesta.");
+
+            // Mostrar en consola para pruebas
+            Console.WriteLine($"Usuario: {dto.UserId}");
+            Console.WriteLine($"Cuestionario: {dto.QuestionnaireId}");
+            foreach (var ans in dto.Answers)
+            {
+                Console.WriteLine($"Pregunta {ans.QuestionId}: Opción {ans.AnswerId}");
+            }
+
+            return Ok(new { message = "Respuestas recibidas correctamente." });
+        }
 
         ///// <summary>
         ///// Evalúa una conversación de texto libre (entrada emocional).

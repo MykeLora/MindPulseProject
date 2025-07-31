@@ -17,10 +17,7 @@ namespace MindPulse.Infrastructure.Persistence.Repositories.Recommendations
             _context = context;  // asigna el contexto recibido
         }
 
-        public Task<List<Recommendation>> GetByCategoryIdAsync(int categoryId)
-        {
-            throw new NotImplementedException();
-        }
+
 
 
     }

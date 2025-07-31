@@ -6,10 +6,12 @@ using MindPulse.Core.Application.DTOs.Evaluations;
 using MindPulse.Core.Application.DTOs.Question;
 using MindPulse.Core.Application.DTOs.Questionaries;
 using MindPulse.Core.Application.DTOs.Recommendations;
+using MindPulse.Core.Application.DTOs.User.Admin;
 using MindPulse.Core.Domain.Entities;
 using MindPulse.Core.Domain.Entities.Categories;
 using MindPulse.Core.Domain.Entities.Evaluations;
 using MindPulse.Core.Domain.Entities.Recommendations;
+using UserResponseDTO = MindPulse.Core.Application.DTOs.Auth.UserResponseDTO;
 
 namespace MindPulse.Core.Application.Mappings
 {
@@ -32,6 +34,16 @@ namespace MindPulse.Core.Application.Mappings
 
             CreateMap<User, UserResponseDTO>();
             CreateMap<UserResponseDTO, User>();
+
+
+            CreateMap<UserAdminCreateDTO, User>()
+                .ForMember(dest => dest.PasswordHash, opt => opt.MapFrom(src => src.Password));
+
+            CreateMap<User, UserResponseAdminDTO>();
+
+
+            CreateMap<UserAdminUpdateDTO, User>()
+            .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());
 
             CreateMap<UserRegistrationDTO, User>()
                 .ForMember(dest => dest.PasswordHash, opt => opt.Ignore());

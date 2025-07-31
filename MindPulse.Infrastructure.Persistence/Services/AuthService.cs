@@ -44,6 +44,8 @@ namespace MindPulse.Infrastructure.Persistence.Services
             _config = config;
         }
 
+
+
         public async Task<ApiResponse<Core.Application.DTOs.Auth.UserResponseDTO>> UserRegistrationAsync(UserRegistrationDTO usuarioDto)
         {
             try

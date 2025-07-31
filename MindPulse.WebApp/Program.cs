@@ -55,6 +55,7 @@ builder.Services.AddScoped<IAiResponseRepository, AiResponseRepository>();
 // 💼 SERVICES
 // ------------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IQuestionnaireService, QuestionnaireService>();
 builder.Services.AddScoped<IEmailService, EmailService>();

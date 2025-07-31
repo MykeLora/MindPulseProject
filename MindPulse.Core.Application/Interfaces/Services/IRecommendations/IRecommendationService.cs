@@ -6,6 +6,6 @@ namespace MindPulse.Core.Application.Interfaces.Services
 {
     public interface IRecommendationService : IGenericService<RecommendationDTO, RecommendationDTO, Recommendation, RecommendationDTO>
     {
-        Task<ApiResponse<List<RecommendationDTO>>> GetByCategoryIdAsync(int categoryId);
+        //Task<ApiResponse<List<RecommendationDTO>>> GetByCategoryIdAsync(int categoryId);
     }
 }

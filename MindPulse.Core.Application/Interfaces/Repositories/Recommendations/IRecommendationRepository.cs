@@ -4,7 +4,6 @@ namespace MindPulse.Core.Application.Interfaces.Repositories.Recommendations
 {
     public interface IRecommendationRepository : IGenericRepository<Recommendation>
     {
-        Task<List<Recommendation>> GetByCategoryIdAsync(int categoryId);
 
     }
 }

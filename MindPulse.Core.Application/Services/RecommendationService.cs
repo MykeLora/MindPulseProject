@@ -27,7 +27,8 @@ namespace MindPulse.Core.Application.Services.Recommendations
                 Title = r.Title,
                 Content = r.Content,
                 CategoryId = r.CategoryId,
-                CategoryName = r.Category?.Name
+                CategoryName = r.Category?.Name,
+                EducationalContentId = r.EducationalContentId
             }).ToList();
 
             return new ApiResponse<List<RecommendationDTO>>(200, result);

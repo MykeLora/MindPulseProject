@@ -59,20 +59,19 @@ namespace MindPulse.Infrastructure.Persistence.Context
         // DbSet properties for your entities
 
         #region DbSets
-        public DbSet<User> Users { get; set; }
+            public DbSet<User> Users { get; set; }
             public DbSet<EmotionalAnalysis> EmotionAnalyses { get; set; }
             public DbSet<Questionnaire> Questionnaires { get; set; }
             public DbSet<Question> Questions { get; set; }
             public DbSet<AnswerOption> AnswerOptions { get; set; }
             public DbSet<EmotionalHistory> EmotionalHistories { get; set; }
-            public DbSet<Test> tests { get; set; }
+            public DbSet<Test> Tests { get; set; }
             public DbSet<TestResult> TestResults { get; set; }
             public DbSet<UserResponse> UserResponses { get; set; }
             public DbSet<AiResponse> AiResponses { get; set; }
             public DbSet<Recommendation> Recommendations { get; set; }
             public DbSet<Category> Categories { get; set; }
             public DbSet<EducationalContent> EducationalContents { get; set; }
-            public DbSet<EmotionRecord> EmotionalRecords { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -81,7 +80,6 @@ namespace MindPulse.Infrastructure.Persistence.Context
 
             modelBuilder.ApplyConfiguration(new EmotionalHistoryConfiguration());
             modelBuilder.ApplyConfiguration(new EmotionAnalysisConfiguration());
-            modelBuilder.ApplyConfiguration(new EmotionRecordConfiguration());
             modelBuilder.ApplyConfiguration(new UserConfiguration());
             modelBuilder.ApplyConfiguration(new QuestionnaireConfiguration());
             modelBuilder.ApplyConfiguration(new QuestionConfiguration());

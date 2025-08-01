@@ -25,9 +25,6 @@ namespace MindPulse.Infrastructure.Persistence.EntityConfigurations.Recommdation
                 .IsRequired()
                 .HasMaxLength(500);
 
-            builder.Property(r => r.UrlSource)
-                .HasMaxLength(350);
-
             builder.HasOne(r => r.User)
                 .WithMany(u => u.Recommendations)
                 .HasForeignKey(r => r.UserId)
@@ -36,6 +33,11 @@ namespace MindPulse.Infrastructure.Persistence.EntityConfigurations.Recommdation
             builder.HasOne(r => r.Category)
                 .WithMany()
                 .HasForeignKey(r => r.CategoryId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.HasOne(r => r.EducationalContent)
+                .WithMany()
+                .HasForeignKey(r => r.EducationalContentId)
                 .OnDelete(DeleteBehavior.Restrict);
         }
     }

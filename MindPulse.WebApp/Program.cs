@@ -5,6 +5,7 @@ using Microsoft.OpenApi.Models;
 using MindPulse.Core.Application.Interfaces.Repositories;
 using MindPulse.Core.Application.Interfaces.Repositories.Recommendations;
 using MindPulse.Core.Application.Interfaces.Services;
+using MindPulse.Core.Application.Interfaces.Services.IRecommendations;
 using MindPulse.Core.Application.Interfaces.Services.Recommendations;
 using MindPulse.Core.Application.Mappings;
 using MindPulse.Core.Application.Services;
@@ -55,15 +56,20 @@ builder.Services.AddScoped<IAiResponseRepository, AiResponseRepository>();
 // 💼 SERVICES
 // ------------------------------
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IEmailService, EmailService>();
+builder.Services.AddScoped<IFreeTextOrchestrationService, FreeTextOrchestrationService>();
 builder.Services.AddScoped<IQuestionService, QuestionService>();
 builder.Services.AddScoped<IQuestionnaireService, QuestionnaireService>();
-builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserResponseService, UserResponseService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IRecommendationService, RecommendationService>();
 builder.Services.AddScoped<IEducationalContentService, EducationalContentService>();
 builder.Services.AddScoped<IAiResponseService, AiResponseService>();
-builder.Services.AddScoped<IFreeTextOrchestrationService, FreeTextOrchestrationService>();
+
+//// ---> Añadir repositorios 
+//builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
+//builder.Services.AddScoped<ITestService, TestService>();
+//builder.Services.AddScoped<ITestResultService, TestResultService>();
 
 // ------------------------------
 // 🤝 SHARED DEPENDENCIES

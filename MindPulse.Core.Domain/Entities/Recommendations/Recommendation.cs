@@ -12,7 +12,9 @@ namespace MindPulse.Core.Domain.Entities.Recommendations
     {
         public string Title { get; set; }
         public string Content { get; set; }
-        public string? UrlSource { get; set; }
+
+        public int? EducationalContentId { get; set; }
+        public EducationalContent? EducationalContent { get; set; }
 
         public int UserId { get; set; }
         public User User { get; set; }

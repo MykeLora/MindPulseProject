@@ -17,11 +17,11 @@ namespace MindPulse.Infrastructure.Persistence.EntityConfigurations.Emotions
 
             builder.HasKey(eh => eh.Id);
 
-            builder.Property(eh => eh.Emotion)
+            builder.Property(eh => eh.Summary)
                    .IsRequired()
-                   .HasMaxLength(100);
+                   .HasMaxLength(1000);
 
-            builder.Property(eh => eh.Score)
+            builder.Property(eh => eh.Confidence)
                    .IsRequired();
 
             builder.Property(eh => eh.Date)

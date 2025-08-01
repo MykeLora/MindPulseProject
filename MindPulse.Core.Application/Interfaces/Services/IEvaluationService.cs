@@ -1,4 +1,5 @@
-﻿using MindPulse.Core.Application.DTOs;
+﻿using MindPulse.Core.Application.DTOs.Emotions;
+using MindPulse.Core.Application.DTOs.Orchestrations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,8 @@ namespace MindPulse.Core.Application.Interfaces.Services
 {
     public interface IEvaluationService
     {
-        Task<EvaluationResult> EvaluateTestAsync(EvaluationRequest request);
-        Task<EvaluationResult> EvaluateFreeTextAsync(FreeTextEvaluationRequest request);
+        Task<EmotionAnalysisDTO> EvaluateTestAsync(TestEvaluationRequest request);
+        Task<EmotionAnalysisDTO> EvaluateFreeTextAsync(FreeTextEvaluationRequest request);
     }
 }
 

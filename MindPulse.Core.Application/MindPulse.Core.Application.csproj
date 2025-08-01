@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Emotions\" />
     <Folder Include="DTOs\Recommendations\" />
   </ItemGroup>
 

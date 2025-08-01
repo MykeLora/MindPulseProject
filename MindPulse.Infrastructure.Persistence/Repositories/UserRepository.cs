@@ -79,8 +79,7 @@ namespace MindPulse.Infrastructure.Persistence.Repositories
                    UserName = u.UserName ?? u.Name,
                    TotalTests = u.Tests.Count,
                    TotalRecommendations = u.Recommendations.Count,
-                   TotalEmotionalAnalyses = u.EmotionalAnalyses.Count,
-                   TotalEmotionalRecords = u.EmotionalRecords.Count
+                   TotalEmotionalAnalyses = u.EmotionalAnalyses.Count
                })
                .FirstOrDefaultAsync();
 

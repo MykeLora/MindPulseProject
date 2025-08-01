@@ -1,7 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MindPulse.Core.Application.DTOs;
 using MindPulse.Core.Application.DTOs.Evaluations;
+using MindPulse.Core.Application.DTOs.Evaluations.TestingPurposes;
+using MindPulse.Core.Application.DTOs.Orchestrations;
 using MindPulse.Core.Application.Interfaces.Services;
 using MindPulse.Core.Application.Wrappers;
 using MindPulse.Infrastructure.Shared.Services;
@@ -15,11 +16,31 @@ namespace MindPulse.WebApi.Controllers
     {
         private readonly IEvaluationService _evaluationService;
         private readonly IFreeTextOrchestrationService _freeTextOrchestrationService;
+        private readonly ICategoryService _categoryService;
+        private readonly IQuestionnaireService _questionnaireService;
+        private readonly IQuestionService _questionService;
+        // IAnswerOptionService _answerOptionService;
 
-        public EvaluationController(IEvaluationService evaluationService, IFreeTextOrchestrationService orchestrationService)
+        public EvaluationController(IEvaluationService evaluationService, IFreeTextOrchestrationService orchestrationService, ICategoryService categoryService)
         {
             _evaluationService = evaluationService;
             _freeTextOrchestrationService = orchestrationService;
+            _categoryService = categoryService;
+        }
+
+        ///// <summary>
+        ///// Evalúa una conversación de texto libre (entrada emocional).
+        ///// </summary>
+        ///// <param name="request">Mensajes escritos por el usuario.</param>
+        ///// <returns>Resultado del análisis emocional.</returns>
+        [HttpPost("free-text-analysis")]
+        public async Task<IActionResult> AnalyzeFromText([FromBody] UserResponseCreateDTO input)
+        {
+            if (string.IsNullOrWhiteSpace(input.FreeResponse))
+                return BadRequest(new { error = "El texto no puede estar vacío." });
+
+            var aiResponse = await _freeTextOrchestrationService.AnalyzeAndStoreAsync(input.UserId, input.FreeResponse);
+            return Ok(new ApiResponse<string>(200, data: aiResponse));
         }
 
         /// <summary>
@@ -27,8 +48,11 @@ namespace MindPulse.WebApi.Controllers
         /// </summary>
         /// <param name="request">Datos del test emocional.</param>
         /// <returns>Resultado del análisis emocional.</returns>
+        /// 
+
+        // Testing Purposes
         [HttpPost("test-(prueba)")]
-        public async Task<IActionResult> EvaluateTest([FromBody] EvaluationRequest request)
+        public async Task<IActionResult> EvaluateTest([FromBody] TestEvaluationRequest request)
         {
             var result = await _evaluationService.EvaluateTestAsync(request);
             return Ok(result);
@@ -51,19 +75,18 @@ namespace MindPulse.WebApi.Controllers
             return Ok(new { message = "Respuestas recibidas correctamente." });
         }
 
-        ///// <summary>
-        ///// Evalúa una conversación de texto libre (entrada emocional).
-        ///// </summary>
-        ///// <param name="request">Mensajes escritos por el usuario.</param>
-        ///// <returns>Resultado del análisis emocional.</returns>
-        [HttpPost("free-text-analysis")]
-        public async Task<IActionResult> AnalyzeFromText([FromBody] UserResponseCreateDTO input)
-        {
-            if (string.IsNullOrWhiteSpace(input.FreeResponse))
-                return BadRequest(new { error = "El texto no puede estar vacío." });
+        //[HttpPost("submit-test-(preview)")]
+        //public async Task<IActionResult> SubmitTestPreview([FromBody] TestCreateDTO input)
+        //{
+        //    // Obtenemos el nombre de la categoría
+        //    var category = await _categoryService.GetByIdAsync(input.CategoryId);
+        //    if (!category.Success || category.Data == null)
+        //    {
+        //        return NotFound(new ApiResponse<string>(404, "Categoría no encontrada."));
+        //    }
 
-            var aiResponse = await _freeTextOrchestrationService.AnalyzeAndStoreAsync(input.UserId, input.FreeResponse);
-            return Ok(new ApiResponse<string>(200, data: aiResponse));
-        }
+        //    // Obtenemos el nombre del cuestionario
+        //    var questionnaire = await _questionnaireService
+        //}
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,5 +15,6 @@ namespace MindPulse.Core.Application.Interfaces.Repositories
         Task<Entity> UpdateAsync(Entity entity);
         Task<bool> DeleteAsync(int id);
         Task<List<Entity>> GetAllWithIncludes(List<string> properties);
+        Task<List<Entity>> FindAsync(Expression<Func<Entity, bool>> predicate);
     }
 }

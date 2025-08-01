@@ -59,10 +59,6 @@ namespace MindPulse.Infrastructure.Persistence.EntityConfigurations
             builder.HasMany(u => u.EmotionalAnalyses)
                    .WithOne(ea => ea.User)
                    .HasForeignKey(ea => ea.UserId);
-
-            builder.HasMany(u => u.EmotionalRecords)
-                   .WithOne(er => er.User)
-                   .HasForeignKey(er => er.UserId);
         }
     }
 

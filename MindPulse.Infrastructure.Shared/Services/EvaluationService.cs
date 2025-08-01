@@ -8,8 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using MindPulse.Core.Application.DTOs;
 using MindPulse.Core.Application.Interfaces.Services;
+using MindPulse.Core.Application.DTOs.Emotions;
+using MindPulse.Core.Application.DTOs.Orchestrations;
 
 namespace MindPulse.Infrastructure.Shared.Services
 {
@@ -29,7 +30,7 @@ namespace MindPulse.Infrastructure.Shared.Services
         ///// </summary>
         ///// <param name="request">Test hecho por el usuario.</param>
         ///// <returns>Resultado del análisis emocional.</returns>
-        public async Task<EvaluationResult> EvaluateTestAsync(EvaluationRequest request)
+        public async Task<EmotionAnalysisDTO> EvaluateTestAsync(TestEvaluationRequest request)
         {
             var prompt = BuildPromptFromTest(request);
 
@@ -61,7 +62,7 @@ namespace MindPulse.Infrastructure.Shared.Services
             {
                 Title = $"Recomendación para resultado {parsed.Level}",
                 Content = parsed.Recommendation,
-                UrlSource = null, // A modificar cuando se conecte con una fuente de recomendación
+                EducationalContentId = null, // A modificar cuando se conecte con una fuente de recomendación
                 UserId = request.UserId,
                 CategoryId = request.CategoryId
             };
@@ -72,7 +73,7 @@ namespace MindPulse.Infrastructure.Shared.Services
             return parsed;
         }
 
-        private string BuildPromptFromTest(EvaluationRequest request)
+        private string BuildPromptFromTest(TestEvaluationRequest request)
         {
             var formatted = string.Join("\n", request.Answers.Select((qa, i) => $"{i + 1}. {qa.Question}: {qa.Answer}"));
 
@@ -86,7 +87,7 @@ namespace MindPulse.Infrastructure.Shared.Services
         ///// </summary>
         ///// <param name="request">Mensajes enviados por el usuario.</param>
         ///// <returns>Resultado del análisis emocional.</returns>
-        public async Task<EvaluationResult> EvaluateFreeTextAsync(FreeTextEvaluationRequest request)
+        public async Task<EmotionAnalysisDTO> EvaluateFreeTextAsync(FreeTextEvaluationRequest request)
         {
             var combinedText = string.Join("\n", request.Messages);
             var lastMessage = request.Messages.LastOrDefault() ?? "";
@@ -131,7 +132,7 @@ namespace MindPulse.Infrastructure.Shared.Services
             return parsed;
         }
 
-        private EvaluationResult ParseEvaluationResponse(string response, string category)
+        private EmotionAnalysisDTO ParseEvaluationResponse(string response, string category)
         {
             var lines = response.Split('\n');
             var level = lines.FirstOrDefault(l => l.ToLower().Contains("nivel"))?.Split(':').Last().Trim();
@@ -141,7 +142,7 @@ namespace MindPulse.Infrastructure.Shared.Services
             float.TryParse(confidenceStr?.Replace("%", "").Trim(), out float confidence);
             if (confidence == 0) confidence = 60f; // fallback
 
-            return new EvaluationResult
+            return new EmotionAnalysisDTO
             {
                 Category = category,
                 Level = level ?? "Bajo",

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MindPulse.Core.Application.DTOs
+namespace MindPulse.Core.Application.DTOs.Orchestrations
 {
     public class FreeTextEvaluationRequest
     {

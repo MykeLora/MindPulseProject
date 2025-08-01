@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MindPulse.Core.Application.DTOs
+namespace MindPulse.Core.Application.DTOs.Emotions
 {
-    public class EvaluationResult
+    public class EmotionAnalysisDTO
     {
         public string Category { get; set; }
         public string Level { get; set; } // Niveles Bajo, Moderado y Alto

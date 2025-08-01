@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MindPulse.Core.Application.DTOs;
 using MindPulse.Core.Application.DTOs.Evaluations;
+using MindPulse.Core.Application.DTOs.Orchestrations;
 using MindPulse.Core.Application.DTOs.Recommendations;
 using MindPulse.Core.Application.Interfaces;
 using MindPulse.Core.Application.Interfaces.Services;

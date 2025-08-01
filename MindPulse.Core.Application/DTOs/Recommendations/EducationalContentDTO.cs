@@ -11,6 +11,5 @@ namespace MindPulse.Core.Application.DTOs.Recommendations
         public int CategoryId { get; set; }
         public string? CategoryName { get; set; }
 
-
     }
 }

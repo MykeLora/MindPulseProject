@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MindPulse.Core.Application.DTOs
+namespace MindPulse.Core.Application.DTOs.Orchestrations
 {
-    public class EvaluationRequest
+    public class TestEvaluationRequest
     {
         public int UserId { get; set; }
         public int CategoryId { get; set; }

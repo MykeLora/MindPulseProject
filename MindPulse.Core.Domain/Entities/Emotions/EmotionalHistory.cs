@@ -10,8 +10,8 @@ namespace MindPulse.Core.Domain.Entities.Emotions
     public class EmotionalHistory : BaseEntity
     {
         public DateTime Date { get; set; }
-        public string Emotion { get; set; }
-        public float Score { get; set; }
+        public string Summary { get; set; }
+        public float Confidence { get; set; }
 
         public int UserId { get; set; }
         public User User { get; set; }

@@ -28,7 +28,6 @@ namespace MindPulse.Core.Domain.Entities
         public ICollection<Test> Tests { get; set; }
         public ICollection<TestResult> TestResults { get; set; }
         public ICollection<Recommendation> Recommendations { get; set; }
-        public ICollection<EmotionRecord> EmotionalRecords { get; set; }
         public ICollection<UserResponse> UserResponses { get; set; }
 
         public enum RoleType

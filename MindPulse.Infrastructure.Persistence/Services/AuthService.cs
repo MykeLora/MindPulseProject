@@ -44,6 +44,8 @@ namespace MindPulse.Infrastructure.Persistence.Services
             _config = config;
         }
 
+
+
         public async Task<ApiResponse<Core.Application.DTOs.Auth.UserResponseDTO>> UserRegistrationAsync(UserRegistrationDTO usuarioDto)
         {
             try
@@ -103,7 +105,8 @@ namespace MindPulse.Infrastructure.Persistence.Services
                     Message = "Login successful.",
                     UserId = user.Id,
                     UserName = user.Name,
-                    Token = token
+                    Token = token,
+                    Rol = user.Role.ToString()
                 };
 
                 return new ApiResponse<LoginResponseDTO>(200, loginResponse);
@@ -130,6 +133,7 @@ namespace MindPulse.Infrastructure.Persistence.Services
                     return new ApiResponse<ConfirmationResponseDTO>(401, "Invalid password.");
 
                 user.PasswordHash = changePasswordDto.NewPassword;
+
 
                 await _userRepository.ChangePasswordAsync(user);
 

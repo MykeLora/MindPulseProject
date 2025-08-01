@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using static MindPulse.Core.Domain.Entities.User;
 
-namespace MindPulse.Core.Application.DTOs.Auth
+namespace MindPulse.Core.Application.DTOs.User.Admin
 {
-    public class UserRegistrationDTO
+    public class UserAdminCreateDTO
     {
         [Required(ErrorMessage = "First Name is required.")]
         [MinLength(2, ErrorMessage = "First Name must be at least 2 characters.")]
@@ -30,6 +30,6 @@ namespace MindPulse.Core.Application.DTOs.Auth
         public string Password { get; set; }
 
         [Required(ErrorMessage = "Must specify the type of user")]
-        public RoleType Rol { get; set; }
+        public RoleType Role { get; set; }
     }
 }

@@ -41,9 +41,8 @@ namespace MindPulse.Infrastructure.Shared.Services
             // Se guardan los resultados del test en la base de datos
             var testResult = new TestResult
             {
-                CompletionDate = DateTime.UtcNow,
                 Summary = parsed.Summary,
-                SeverityScore = parsed.Level switch
+                Confidence = parsed.Level switch
                 {
                     "Bajo" => 0.9f,
                     "Moderado" => 0.6f,

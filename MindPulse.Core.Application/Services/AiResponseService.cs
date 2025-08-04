@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MindPulse.Core.Application.DTOs.Evaluations;
+using MindPulse.Core.Application.DTOs.Evaluations.AiResponse;
 using MindPulse.Core.Application.Interfaces.Repositories;
 using MindPulse.Core.Application.Interfaces.Services;
 using MindPulse.Core.Application.Wrappers;

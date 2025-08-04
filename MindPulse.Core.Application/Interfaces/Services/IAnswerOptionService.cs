@@ -15,5 +15,6 @@ namespace MindPulse.Core.Application.Interfaces.Services
         Task<ApiResponse<AnswerOptionResponseDTO>> CreateAsync(AnswerOptionCreateDTO dto);
         Task<ApiResponse<AnswerOptionResponseDTO>> UpdateAsync(int id, AnswerOptionUpdateDTO dto);
         Task<ApiResponse<bool>> DeleteAsync(int id);
+        Task<ApiResponse<List<AnswerOptionResponseDTO>>> GetByQuestionIdAsync(int questionId);
     }
 }

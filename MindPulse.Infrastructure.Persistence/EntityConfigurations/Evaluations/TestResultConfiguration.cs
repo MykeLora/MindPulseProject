@@ -17,11 +17,11 @@ namespace MindPulse.Infrastructure.Persistence.EntityConfigurations.Evaluations
 
             builder.HasKey(tr => tr.Id);
 
-            builder.Property(tr => tr.SeverityScore)
+            builder.Property(tr => tr.Confidence)
                    .IsRequired();
 
             builder.Property(tr => tr.Summary)
-                   .HasMaxLength(500);
+                   .HasMaxLength(1000);
 
             builder.HasOne(tr => tr.User)
                    .WithMany(u => u.TestResults)

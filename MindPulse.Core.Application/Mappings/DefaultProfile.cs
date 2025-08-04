@@ -2,7 +2,10 @@
 using MindPulse.Core.Application.DTOs.AnswerOption;
 using MindPulse.Core.Application.DTOs.Auth;
 using MindPulse.Core.Application.DTOs.Categories;
-using MindPulse.Core.Application.DTOs.Evaluations;
+using MindPulse.Core.Application.DTOs.Evaluations.AiResponse;
+using MindPulse.Core.Application.DTOs.Evaluations.Test;
+using MindPulse.Core.Application.DTOs.Evaluations.TestResults;
+using MindPulse.Core.Application.DTOs.Evaluations.UserResponse;
 using MindPulse.Core.Application.DTOs.Question;
 using MindPulse.Core.Application.DTOs.Questionaries;
 using MindPulse.Core.Application.DTOs.Recommendations;
@@ -67,27 +70,27 @@ namespace MindPulse.Core.Application.Mappings
             CreateMap<EducationalContent, EducationalContentDTO>().ReverseMap();
             #endregion
 
-            //#region Test Mappings
-            //CreateMap<TestCreateDTO, Test>();
-            //CreateMap<TestUpdateDTO, Test>();
+            #region Test Mappings
+            CreateMap<TestCreateDTO, Test>();
+            CreateMap<Test, TestDTO>();
+            CreateMap<TestResponseItemDTO, UserResponse>()
+                .ForMember(dest => dest.AnswerOptionId, opt => opt.MapFrom(src => src.AnswerOptionId))
+                .ForMember(dest => dest.QuestionId, opt => opt.MapFrom(src => src.QuestionId));
+            #endregion
 
-            //CreateMap<Test, TestResponseDTO>()
-            //    .ForMember(dest => dest.CategoryName, opt => opt.MapFrom(src => src.Category.Name))
-            //    .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User.UserName))
-            //    .ForMember(dest => dest.QuestionCount, opt => opt.MapFrom(src => src.Questions.Count))
-            //    .ForMember(dest => dest.TestResultsCount, opt => opt.MapFrom(src => src.TestResults.Count));
-            //#endregion
+            #region TestResult Mappings
+            CreateMap<TestResultCreateDTO, TestResult>();
+            CreateMap<TestResult, TestResultDTO>();
+            #endregion
 
             #region AnswerOption Mappings
-
             CreateMap<AnswerOptionCreateDTO, AnswerOption>();
             CreateMap<AnswerOptionUpdateDTO, AnswerOption>();
             CreateMap<AnswerOption, AnswerOptionDTO>();
-            CreateMap<AnswerOption, AnswerOptionResponseDTO>()
-                .ForMember(dest => dest.Text, opt => opt.MapFrom(src => src.Question.Text));
+            CreateMap<AnswerOption, AnswerOptionResponseDTO>();
+            #endregion
 
             #region Question Mappings
-
             CreateMap<QuestionCreateDTO, Question>();
             CreateMap<QuestionUpdateDTO, Question>();
             CreateMap<Question, QuestionCreateDTO>();
@@ -95,19 +98,15 @@ namespace MindPulse.Core.Application.Mappings
 
             CreateMap<Question, QuestionResponseDTO>()
                 .ForMember(dest => dest.QuestionnaireTitle, opt => opt.MapFrom(src => src.Questionnaire.Title));
-
-
             #endregion
 
-            #region Questionnaire
+            #region Questionnaire Mappings
             CreateMap<QuestionnaireCreateDTO, Questionnaire>();
             CreateMap<QuestionnaireUpdateDTO, Questionnaire>();
             CreateMap<Questionnaire, QuestionnaireSimpleDTO>();
 
             CreateMap<Questionnaire, QuestionnaireResponseDTO>()
                 .ForMember(dest => dest.Questions, opt => opt.MapFrom(src => src.Questions));
-            #endregion
-
             #endregion
         }
     }

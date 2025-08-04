@@ -51,6 +51,9 @@ builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<IRecommendationRepository, RecommendationRepository>();
 builder.Services.AddScoped<IEducationalContentRepository, EducationalContentRepository>();
 builder.Services.AddScoped<IAiResponseRepository, AiResponseRepository>();
+builder.Services.AddScoped<IAnswerOptionRepository, AnswerOptionRepository>();
+builder.Services.AddScoped<ITestRepository, TestRepository>();
+builder.Services.AddScoped<ITestResultRepository, TestResultRepository>();
 
 // ------------------------------
 // 💼 SERVICES
@@ -66,11 +69,9 @@ builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IRecommendationService, RecommendationService>();
 builder.Services.AddScoped<IEducationalContentService, EducationalContentService>();
 builder.Services.AddScoped<IAiResponseService, AiResponseService>();
-
-//// ---> Añadir repositorios 
-//builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
-//builder.Services.AddScoped<ITestService, TestService>();
-//builder.Services.AddScoped<ITestResultService, TestResultService>();
+builder.Services.AddScoped<IAnswerOptionService, AnswerOptionService>();
+builder.Services.AddScoped<ITestService, TestService>();
+builder.Services.AddScoped<ITestResultService, TestResultService>();
 
 // ------------------------------
 // 🤝 SHARED DEPENDENCIES

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using MindPulse.Core.Application.DTOs.Evaluations;
+using MindPulse.Core.Application.DTOs.Evaluations.TestResults;
 using MindPulse.Core.Application.Interfaces.Repositories;
 using MindPulse.Core.Application.Interfaces.Services.IRecommendations;
 using MindPulse.Core.Application.Wrappers;
@@ -14,10 +14,10 @@ namespace MindPulse.Infrastructure.Shared.Services
 {
     public class TestResultService : ITestResultService
     {
-        private readonly IGenericRepository<TestResult> _testResultRepository;
+        private readonly ITestResultRepository _testResultRepository;
         private readonly IMapper _mapper;
 
-        public TestResultService(IGenericRepository<TestResult> testResultRepository, IMapper mapper)
+        public TestResultService(ITestResultRepository testResultRepository, IMapper mapper)
         {
             _testResultRepository = testResultRepository;
             _mapper = mapper;
@@ -42,7 +42,7 @@ namespace MindPulse.Infrastructure.Shared.Services
 
         public async Task<ApiResponse<List<TestResultDTO>>> GetAllByUserAsync(int userId)
         {
-            var results = await _testResultRepository.FindAsync(r => r.UserId == userId);
+            var results = await _testResultRepository.GetAllByUserAsync(userId);
             var dtoList = _mapper.Map<List<TestResultDTO>>(results);
             return new ApiResponse<List<TestResultDTO>>(200, dtoList);
         }

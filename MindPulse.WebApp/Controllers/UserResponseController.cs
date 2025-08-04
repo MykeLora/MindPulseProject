@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MindPulse.Core.Application.DTOs.Evaluations;
+using MindPulse.Core.Application.DTOs.Evaluations.UserResponse;
 using MindPulse.Core.Application.DTOs.Question;
 using MindPulse.Core.Application.Interfaces.Services;
 using System.Threading.Tasks;

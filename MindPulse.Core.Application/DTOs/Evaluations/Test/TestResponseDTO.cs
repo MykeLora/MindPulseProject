@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MindPulse.Core.Application.DTOs.Evaluations
+namespace MindPulse.Core.Application.DTOs.Evaluations.Test
 {
-    public class TestResponsesDTO
+    public class TestResponseDTO
     {
         public int UserId { get; set; }
         public int CategoryId { get; set; }
@@ -17,6 +17,6 @@ namespace MindPulse.Core.Application.DTOs.Evaluations
     public class TestResponseItemDTO
     {
         public int QuestionId { get; set; }
-        public int AnswerId { get; set; }
+        public int AnswerOptionId { get; set; }
     }
 }

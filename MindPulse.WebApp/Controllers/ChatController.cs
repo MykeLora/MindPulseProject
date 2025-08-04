@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MindPulse.Core.Application.DTOs;
-using MindPulse.Core.Application.DTOs.Evaluations;
+using MindPulse.Core.Application.DTOs.Evaluations.UserResponse;
 using MindPulse.Core.Application.Interfaces.Services;
 using MindPulse.Infrastructure.Persistence.Context;
 

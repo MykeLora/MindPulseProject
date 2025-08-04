@@ -15,10 +15,10 @@ namespace MindPulse.Infrastructure.Shared.Services
 {
     public class AnswerOptionService : IAnswerOptionService
     {
-        private readonly IGenericRepository<AnswerOption> _answerRepository;
+        private readonly IAnswerOptionRepository _answerRepository;
         private readonly IMapper _mapper;
 
-        public AnswerOptionService(IGenericRepository<AnswerOption> answerRepository, IMapper mapper)
+        public AnswerOptionService(IAnswerOptionRepository answerRepository, IMapper mapper)
         {
             _answerRepository = answerRepository;
             _mapper = mapper;
@@ -65,6 +65,14 @@ namespace MindPulse.Infrastructure.Shared.Services
         {
             var deleted = await _answerRepository.DeleteAsync(id);
             return new ApiResponse<bool>(200, deleted);
+        }
+
+        public async Task<ApiResponse<List<AnswerOptionResponseDTO>>> GetByQuestionIdAsync(int questionId)
+        {
+            var allOptions = await _answerRepository.GetAllAsync();
+            var filtered = allOptions.Where(o => o.QuestionId == questionId).ToList();
+            var dtos = _mapper.Map<List<AnswerOptionResponseDTO>>(filtered);
+            return new ApiResponse<List<AnswerOptionResponseDTO>>(200, dtos);
         }
     }
 }

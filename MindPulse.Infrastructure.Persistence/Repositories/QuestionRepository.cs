@@ -47,7 +47,5 @@ namespace MindPulse.Infrastructure.Persistence.Repositories
                 .Include(q => q.Questionnaire) 
                 .FirstOrDefaultAsync(q => q.Id == id);
         }
-
-
     }
 }

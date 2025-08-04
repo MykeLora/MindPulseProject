@@ -1,4 +1,4 @@
-﻿using MindPulse.Core.Application.DTOs.Evaluations;
+﻿using MindPulse.Core.Application.DTOs.Evaluations.TestResults;
 using MindPulse.Core.Application.Wrappers;
 using System;
 using System.Collections.Generic;

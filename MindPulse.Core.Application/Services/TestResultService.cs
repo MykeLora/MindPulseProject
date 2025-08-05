@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
+using MindPulse.Core.Application.DTOs.AnswerOption;
 using MindPulse.Core.Application.DTOs.Evaluations.TestResults;
 using MindPulse.Core.Application.Interfaces.Repositories;
-using MindPulse.Core.Application.Interfaces.Services.IRecommendations;
+using MindPulse.Core.Application.Interfaces.Services;
 using MindPulse.Core.Application.Wrappers;
 using MindPulse.Core.Domain.Entities.Evaluations;
 using System;
@@ -28,6 +29,13 @@ namespace MindPulse.Infrastructure.Shared.Services
             var entity = _mapper.Map<TestResult>(dto);
             await _testResultRepository.AddAsync(entity);
             return new ApiResponse<int>(200, entity.Id);
+        }
+
+        public async Task<ApiResponse<List<TestResultDTO>>> GetAllAsync()
+        {
+            var result = await _testResultRepository.GetAllAsync();
+            var dtos = _mapper.Map<List<TestResultDTO>>(result);
+            return new ApiResponse<List<TestResultDTO>>(200, dtos);
         }
 
         public async Task<ApiResponse<TestResultDTO>> GetByIdAsync(int id)

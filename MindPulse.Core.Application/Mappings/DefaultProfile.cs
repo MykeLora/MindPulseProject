@@ -67,6 +67,7 @@ namespace MindPulse.Core.Application.Mappings
             #endregion
 
             #region EducationalContent
+            CreateMap<EducationalContentCreateDTO, EducationalContent>();
             CreateMap<EducationalContent, EducationalContentDTO>().ReverseMap();
             #endregion
 

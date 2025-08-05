@@ -10,6 +10,7 @@ namespace MindPulse.Core.Application.Interfaces.Repositories
     public interface ITestResultRepository
     {
         Task<TestResult> AddAsync(TestResult result);
+        Task<List<TestResult>> GetAllAsync();
         Task<TestResult?> GetByIdAsync(int id);
         Task<List<TestResult>> GetAllByUserAsync(int userId);
     }

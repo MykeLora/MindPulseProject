@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using MindPulse.Core.Application.Interfaces.Services;
 using MindPulse.Core.Application.DTOs.Emotions;
 using MindPulse.Core.Application.DTOs.Orchestrations;
+using MindPulse.Core.Application.DTOs.Evaluations.Test;
 
 namespace MindPulse.Infrastructure.Shared.Services
 {
@@ -30,7 +31,7 @@ namespace MindPulse.Infrastructure.Shared.Services
         ///// </summary>
         ///// <param name="request">Test hecho por el usuario.</param>
         ///// <returns>Resultado del análisis emocional.</returns>
-        public async Task<EmotionAnalysisDTO> EvaluateTestAsync(TestEvaluationRequest request)
+        public async Task<EmotionAnalysisDTO> EvaluateTestAsync(TestResponseDTO request)
         {
             var prompt = BuildPromptFromTest(request);
 
@@ -49,7 +50,7 @@ namespace MindPulse.Infrastructure.Shared.Services
                     "Alto" => 0.3f,
                     _ => 0.5f
                 },
-                QuestionnaireId = request.CategoryId, // a modificarse cuando se conecte con cuestionarios
+                QuestionnaireId = request.QuestionnaireId, 
                 UserId = request.UserId
             };
 
@@ -72,9 +73,9 @@ namespace MindPulse.Infrastructure.Shared.Services
             return parsed;
         }
 
-        private string BuildPromptFromTest(TestEvaluationRequest request)
+        private string BuildPromptFromTest(TestResponseDTO request)
         {
-            var formatted = string.Join("\n", request.Answers.Select((qa, i) => $"{i + 1}. {qa.Question}: {qa.Answer}"));
+            var formatted = string.Join("\n", request.Answers.Select((qa, i) => $"{i + 1}. {qa.QuestionId}: {qa.AnswerOptionId}"));
 
             return $"Evalúa este test emocional centrado en la categoría ID {request.CategoryId}:\n{formatted}\n\n" +
                     "Responde con nivel de alerta, resumen breve y recomendación para el usuario.";
@@ -146,7 +147,7 @@ namespace MindPulse.Infrastructure.Shared.Services
                 Category = category,
                 Level = level ?? "Bajo",
                 Summary = summary ?? "",
-                Confidence = confidence / 100f // convertir a 0.0–1.0
+                Confidence = confidence / 100f // Se convierte a 0.0 – 1.0
             };
         }
 

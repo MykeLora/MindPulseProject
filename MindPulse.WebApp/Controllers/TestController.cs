@@ -2,6 +2,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MindPulse.Core.Application.DTOs.Evaluations.Test;
 using MindPulse.Core.Application.Interfaces.Services;
+using MindPulse.Core.Application.Services;
+using MindPulse.Core.Application.Wrappers;
+using MindPulse.Infrastructure.Shared.Services;
 using System.Threading.Tasks;
 
 namespace MindPulse.WebApp.Controllers
@@ -12,16 +15,39 @@ namespace MindPulse.WebApp.Controllers
     public class TestController : ControllerBase
     {
         private readonly ITestService _testService;
+        private readonly IEvaluationService _evaluationService;
+        private readonly ICategoryService _categoryService;
+        private readonly IQuestionnaireService _questionnaireService;
+        private readonly IQuestionService _questionService;
+        private readonly IAnswerOptionService _answerOptionService;
 
-        public TestController(ITestService testService)
+        public TestController(
+            ITestService testService,
+            IEvaluationService evaluationService,
+            ICategoryService categoryService,
+            IQuestionnaireService questionnaireService,
+            IQuestionService questionService,
+            IAnswerOptionService answerOptionService)
         {
             _testService = testService;
+            _evaluationService = evaluationService;
+            _categoryService = categoryService;
+            _questionnaireService = questionnaireService;
+            _questionService = questionService;
+            _answerOptionService = answerOptionService;
         }
 
         [HttpPost("create")]
         public async Task<IActionResult> Create([FromBody] TestCreateDTO dto)
         {
             var result = await _testService.CreateAsync(dto);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _testService.GetAllAsync();
             return StatusCode(result.StatusCode, result);
         }
 
@@ -37,6 +63,13 @@ namespace MindPulse.WebApp.Controllers
         {
             var result = await _testService.GetByIdAsync(id);
             return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpPost("submit-new-test")]
+        public async Task<IActionResult> SubmitTest([FromBody] TestResponseDTO input)
+        {
+            var result = await _testService.SubmitTestAsync(input);
+            return Ok(new { message = "Respuestas recibidas correctamente." });
         }
     }
 }

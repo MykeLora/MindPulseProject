@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="DTOs\Recommendations\" />
+    <Folder Include="DTOs\Evaluations\TEMP\" />
   </ItemGroup>
 
 

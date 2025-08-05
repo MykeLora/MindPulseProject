@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MindPulse.Core.Application.DTOs.Evaluations.TestingPurposes
+namespace MindPulse.Core.Application.DTOs.Evaluations.Test
 {
-    public class EnrichedTestSubmissionDTO
+    public class TestSubmissionDTO
     {
         public int UserId { get; set; }
         public string CategoryName { get; set; }

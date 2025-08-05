@@ -26,6 +26,11 @@ namespace MindPulse.Infrastructure.Persistence.Repositories
             return result;
         }
 
+        public async Task<List<TestResult>> GetAllAsync()
+        {
+            return await _context.TestResults.ToListAsync();
+        }
+
         public async Task<TestResult?> GetByIdAsync(int id)
         {
             return await _context.TestResults.FindAsync(id);

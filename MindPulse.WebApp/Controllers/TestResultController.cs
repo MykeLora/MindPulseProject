@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using MindPulse.Core.Application.DTOs.Evaluations.Test;
 using MindPulse.Core.Application.DTOs.Evaluations.TestResults;
 using MindPulse.Core.Application.Interfaces.Services;
-using MindPulse.Core.Application.Interfaces.Services.IRecommendations;
+using MindPulse.Infrastructure.Shared.Services;
 using System.Threading.Tasks;
 
 namespace MindPulse.WebApp.Controllers
@@ -24,6 +24,13 @@ namespace MindPulse.WebApp.Controllers
         public async Task<IActionResult> Create([FromBody] TestResultCreateDTO dto)
         {
             var result = await _testResultService.CreateAsync(dto);
+            return StatusCode(result.StatusCode, result);
+        }
+
+        [HttpGet("all")]
+        public async Task<IActionResult> GetAll()
+        {
+            var result = await _testResultService.GetAllAsync();
             return StatusCode(result.StatusCode, result);
         }
 

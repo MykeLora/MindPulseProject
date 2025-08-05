@@ -8,7 +8,7 @@ namespace MindPulse.WebApp.Controllers.Recommendations
 {
     [Authorize]
     [ApiController]
-    [Route("api/educational-content")]
+    [Route("api/[controller]")]
     public class EducationalContentController : ControllerBase
     {
         private readonly IEducationalContentService _educationalContentService;
@@ -18,9 +18,8 @@ namespace MindPulse.WebApp.Controllers.Recommendations
             _educationalContentService = educationalContentService;
         }
 
-        [Authorize(Roles = "Admin")]
         [HttpPost("create")]
-        public async Task<IActionResult> Create([FromBody] EducationalContentDTO dto)
+        public async Task<IActionResult> CreateAsync([FromBody] EducationalContentCreateDTO dto)
         {
             var result = await _educationalContentService.CreateAsync(dto);
             return StatusCode(result.StatusCode, result);
@@ -33,27 +32,10 @@ namespace MindPulse.WebApp.Controllers.Recommendations
             return StatusCode(result.StatusCode, result);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("by-id/{id}")]
         public async Task<IActionResult> GetById(int id)
         {
             var result = await _educationalContentService.GetByIdAsync(id);
-            return StatusCode(result.StatusCode, result);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpPut("update/{id}")]
-        public async Task<IActionResult> Update(int id, [FromBody] EducationalContentDTO dto)
-        {
-            if (id != dto.Id) return BadRequest("ID mismatch");
-            var result = await _educationalContentService.UpdateAsync(dto);
-            return StatusCode(result.StatusCode, result);
-        }
-
-        [Authorize(Roles = "Admin")]
-        [HttpDelete("delete/{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            var result = await _educationalContentService.DeleteAsync(id);
             return StatusCode(result.StatusCode, result);
         }
 
@@ -63,5 +45,25 @@ namespace MindPulse.WebApp.Controllers.Recommendations
             var result = await _educationalContentService.GetByCategoryIdAsync(categoryId);
             return StatusCode(result.StatusCode, result);
         }
+
+
+        // Endpoints for Admin Roles
+
+        //[Authorize(Roles = "Admin")]
+        //[HttpPut("update/{id}")]
+        //public async Task<IActionResult> Update(int id, [FromBody] EducationalContentDTO dto)
+        //{
+        //    if (id != dto.Id) return BadRequest("ID mismatch");
+        //    var result = await _educationalContentService.UpdateAsync(dto);
+        //    return StatusCode(result.StatusCode, result);
+        //}
+
+        //[Authorize(Roles = "Admin")]
+        //[HttpDelete("delete/{id}")]
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var result = await _educationalContentService.DeleteAsync(id);
+        //    return StatusCode(result.StatusCode, result);
+        //}
     }
 }

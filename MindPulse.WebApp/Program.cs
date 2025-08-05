@@ -5,7 +5,6 @@ using Microsoft.OpenApi.Models;
 using MindPulse.Core.Application.Interfaces.Repositories;
 using MindPulse.Core.Application.Interfaces.Repositories.Recommendations;
 using MindPulse.Core.Application.Interfaces.Services;
-using MindPulse.Core.Application.Interfaces.Services.IRecommendations;
 using MindPulse.Core.Application.Interfaces.Services.Recommendations;
 using MindPulse.Core.Application.Mappings;
 using MindPulse.Core.Application.Services;

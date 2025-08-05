@@ -1,20 +1,8 @@
-﻿using AutoMapper;
-using MindPulse.Core.Application.DTOs;
-using MindPulse.Core.Application.DTOs.Evaluations;
+﻿using MindPulse.Core.Application.DTOs.Evaluations;
 using MindPulse.Core.Application.DTOs.Evaluations.UserResponse;
 using MindPulse.Core.Application.DTOs.Orchestrations;
-using MindPulse.Core.Application.DTOs.Recommendations;
-using MindPulse.Core.Application.Interfaces;
 using MindPulse.Core.Application.Interfaces.Services;
 using MindPulse.Core.Application.Wrappers;
-using MindPulse.Core.Domain.Entities.Emotions;
-using MindPulse.Core.Domain.Entities.Evaluations;
-using MindPulse.Infrastructure.Persistence.Context;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MindPulse.Infrastructure.Shared.Services
 {
@@ -22,28 +10,16 @@ namespace MindPulse.Infrastructure.Shared.Services
     {
         private readonly IUserResponseService _userResponseService;
         private readonly IAiResponseService _aiResponseService;
-        private readonly IOpenAiService _openAiService;
         private readonly IEvaluationService _evaluationService;
-        private readonly IRecommendationService _recommendationService;
-        private readonly IMapper _mapper;
-        private readonly ApplicationContext _context;
 
         public FreeTextOrchestrationService(
         IUserResponseService userResponseService,
         IAiResponseService aiResponseService,
-        IOpenAiService openAiService,
-        IEvaluationService evaluationService,
-        IRecommendationService recommendationService,
-        IMapper mapper,
-        ApplicationContext context)
+        IEvaluationService evaluationService)
         {
             _userResponseService = userResponseService;
             _aiResponseService = aiResponseService;
-            _openAiService = openAiService;
             _evaluationService = evaluationService;
-            _recommendationService = recommendationService;
-            _mapper = mapper;
-            _context = context;
         }
 
         public async Task<ApiResponse<List<ChatMessageDTO>>> GetFullChatAsync(int userId)
@@ -94,7 +70,7 @@ namespace MindPulse.Infrastructure.Shared.Services
             if (count % 20 == 0) 
             {
                 // Step 2.1: If the user has sent 20 new messages,
-                // we get the last 20 messages to the AI and send them for evaluation.
+                // we get the last 20 messages and send to the AI them for evaluation.
                 var recentMessages = userResponses.Data?
                 .Select(m => m.FreeResponse)
                 .Where(m => !string.IsNullOrEmpty(m))

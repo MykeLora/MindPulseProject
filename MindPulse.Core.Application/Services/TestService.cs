@@ -18,9 +18,9 @@ namespace MindPulse.Infrastructure.Shared.Services
     public class TestService : ITestService
     {
         private readonly ITestRepository _testRepository;
-        private readonly IMapper _mapper;
         private readonly ICategoryService _categoryService;
         private readonly IQuestionnaireService _questionnaireService;
+        private readonly IMapper _mapper;
 
         public TestService(
             ITestRepository testRepository, 
@@ -67,56 +67,15 @@ namespace MindPulse.Infrastructure.Shared.Services
 
         public async Task<ApiResponse<int>> SubmitTestAsync(TestResponseDTO input)
         {
-            // Validamos que se envíen respuestas
-            if (input.Answers == null || !input.Answers.Any())
+            try
             {
-                return new ApiResponse<int>(400, "Debes enviar al menos una respuesta");
+                var testId = await _testRepository.SubmitTestAsync(input);
+                return new ApiResponse<int>(200, testId);
             }
-
-            // Obtenemos el nombre de la categoría
-            var category = await _categoryService.GetByIdAsync(input.CategoryId);
-            if (!category.Success || category.Data == null)
+            catch (Exception ex)
             {
-                return new ApiResponse<int>(400, "Categoría no encontrada.");
+                return new ApiResponse<int>(500, $"{ex.Message}");
             }
-
-            // Obtenemos el nombre del cuestionario
-            var questionnaire = await _questionnaireService.GetByIdAsync(input.QuestionnaireId);
-            if (!questionnaire.Success || questionnaire.Data == null)
-            {
-                return new ApiResponse<int>(400, "Cuestionario no encontrado.");
-            }
-
-            // Convertimos las respuestas en un diccionario para fácil acceso
-            string questionnaireName = questionnaire.Data.Title;
-            DateTime now = DateTime.Now;
-            string fechaActual = now.ToString("yyyyMMdd");
-            string fechaHoraStr = now.ToString("dd 'de' MMMM 'de' yyyy, h:mm tt", new System.Globalization.CultureInfo("es-ES"));
-
-            // Buscar tests previos del usuario para generar un nuevo número de intento
-            var allTestsResult = await GetAllByUserAsync(input.UserId);
-            int intentosHoy = allTestsResult.Data
-            .Where(t => t.Title.StartsWith($"{questionnaireName} no. {input.UserId}-{fechaActual}"))
-            .Count() + 1;
-
-            // Generar título y descripción
-            string title = $"{questionnaireName} no. {input.UserId}-{fechaActual}-{intentosHoy}";
-            string description = $"{questionnaireName} tomado por el usuario en fecha {fechaHoraStr}. Intento #{intentosHoy}.";
-
-            // Registrar el Test
-            var testCreateDto = new TestCreateDTO
-            {
-                Title = title,
-                Description = description,
-                CategoryId = input.CategoryId,
-                UserId = input.UserId
-            };
-
-            // Se guarda el test y se obtiene el ID
-            var createdTest = await CreateAsync(testCreateDto);
-            int testId = createdTest.Data; // este ID se guardará luego en TestResult
-
-            return createdTest;
         }
     }
 }

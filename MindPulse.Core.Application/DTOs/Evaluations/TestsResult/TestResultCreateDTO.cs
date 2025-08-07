@@ -9,8 +9,9 @@ namespace MindPulse.Core.Application.DTOs.Evaluations.TestResults
     public class TestResultCreateDTO
     {
         public string Summary { get; set; }
-        public float SeverityScore { get; set; }
+        public float Confidence { get; set; }
         public int QuestionnaireId { get; set; }
         public int UserId { get; set; }
+        public int TestId { get; set; }
     }
 }

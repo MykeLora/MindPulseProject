@@ -9,19 +9,17 @@ namespace MindPulse.WebApi.Controllers
     [ApiController]
     [Route("api/[controller]")]
 
-    public class EmotionController : ControllerBase
+    public class EmotionalHistoriesController : ControllerBase
     {
         private readonly IOpenAiService _openAiService;
-        public EmotionController(IOpenAiService openAiService)
+        public EmotionalHistoriesController(IOpenAiService openAiService)
         {
             _openAiService = openAiService;
         }
 
-        //[HttpPost("analyze")]
-        //public async Task<IActionResult> AnalyzeEmotion([FromBody] EmotionRequest request)
-        //{
-        //    var result = await _openAiService.AnalyzeTextAsync(request.Text);
-        //    return Ok(result);
-        //}
+        // GetAllByUser
+        // GetWeeklyByUser
+        // GetMonthlyByUser
+        // GetGlobalByUser
     }
 }

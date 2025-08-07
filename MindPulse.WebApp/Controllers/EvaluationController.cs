@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using MindPulse.Core.Application.DTOs.Evaluations.Analysis;
 using MindPulse.Core.Application.DTOs.Evaluations.Test;
 using MindPulse.Core.Application.DTOs.Evaluations.UserResponse;
 using MindPulse.Core.Application.DTOs.Orchestrations;
 using MindPulse.Core.Application.Interfaces.Services;
+using MindPulse.Core.Application.Interfaces.Services.Orchestrations;
 using MindPulse.Core.Application.Wrappers;
 using MindPulse.Infrastructure.Shared.Services;
 
@@ -14,28 +16,16 @@ namespace MindPulse.WebApi.Controllers
     [Route("api/[controller]")]
     public class EvaluationController : ControllerBase
     {
-        private readonly IEvaluationService _evaluationService;
         private readonly IFreeTextOrchestrationService _freeTextOrchestrationService;
-        //private readonly ICategoryService _categoryService;
-        //private readonly IQuestionnaireService _questionnaireService;
-        //private readonly IQuestionService _questionService;
-        //private readonly IAnswerOptionService _answerOptionService;
+        private readonly ITestOrchestrationService _testOrchestrationService;
 
         public EvaluationController(
-            IEvaluationService evaluationService, 
-            IFreeTextOrchestrationService orchestrationService 
-            //ICategoryService categoryService, 
-            //IQuestionnaireService questionnaireService, 
-            //IQuestionService questionService,
-            //IAnswerOptionService answerOptionService
+            IFreeTextOrchestrationService orchestrationService,
+            ITestOrchestrationService testOrchestrationService
             )
         {
-            _evaluationService = evaluationService;
             _freeTextOrchestrationService = orchestrationService;
-            //_categoryService = categoryService;
-            //_questionnaireService = questionnaireService;
-            //_questionService = questionService;
-            //_answerOptionService = answerOptionService;
+            _testOrchestrationService = testOrchestrationService;
         }
 
         ///// <summary>
@@ -59,6 +49,11 @@ namespace MindPulse.WebApi.Controllers
         /// <param name="request">Datos del test emocional.</param>
         /// <returns>Resultado del análisis emocional.</returns>
         /// 
-        /// A desarrollar. 
+        [HttpPost("test-analysis")]
+        public async Task<IActionResult> AnalyzeFromTest([FromBody] TestResponseDTO input)
+        {
+            var aiResponse = await _testOrchestrationService.AnalyzeAndStoreTestAsync(input);
+            return StatusCode(aiResponse.StatusCode, aiResponse);
+        }
     }
 }

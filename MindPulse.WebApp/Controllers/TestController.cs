@@ -15,26 +15,10 @@ namespace MindPulse.WebApp.Controllers
     public class TestController : ControllerBase
     {
         private readonly ITestService _testService;
-        private readonly IEvaluationService _evaluationService;
-        private readonly ICategoryService _categoryService;
-        private readonly IQuestionnaireService _questionnaireService;
-        private readonly IQuestionService _questionService;
-        private readonly IAnswerOptionService _answerOptionService;
 
-        public TestController(
-            ITestService testService,
-            IEvaluationService evaluationService,
-            ICategoryService categoryService,
-            IQuestionnaireService questionnaireService,
-            IQuestionService questionService,
-            IAnswerOptionService answerOptionService)
+        public TestController(ITestService testService)
         {
             _testService = testService;
-            _evaluationService = evaluationService;
-            _categoryService = categoryService;
-            _questionnaireService = questionnaireService;
-            _questionService = questionService;
-            _answerOptionService = answerOptionService;
         }
 
         [HttpPost("create")]

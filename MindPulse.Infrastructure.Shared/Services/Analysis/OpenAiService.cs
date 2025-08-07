@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using MindPulse.Core.Application.Interfaces.Services;
 
-namespace MindPulse.Infrastructure.Shared.Services
+namespace MindPulse.Infrastructure.Shared.Services.Analysis
 {
     public class OpenAiService : IOpenAiService
     {

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MindPulse.Core.Application.Interfaces.Services
+namespace MindPulse.Core.Application.Interfaces.Services.Orchestrations
 {
     public interface IFreeTextOrchestrationService
     {

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net.Http;
 using Microsoft.Extensions.Http;
+using MindPulse.Infrastructure.Shared.Services.Analysis;
 
 
 namespace MindPulse.WebApp

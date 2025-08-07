@@ -1,5 +1,7 @@
 using AutoMapper;
+using MindPulse.Core.Application.DTOs.Evaluations.Test;
 using MindPulse.Core.Application.DTOs.Recommendations;
+using MindPulse.Core.Application.Interfaces.Repositories;
 using MindPulse.Core.Application.Interfaces.Repositories.Recommendations;
 using MindPulse.Core.Application.Interfaces.Services;
 using MindPulse.Core.Application.Wrappers;
@@ -7,53 +9,60 @@ using MindPulse.Core.Domain.Entities.Recommendations;
 
 namespace MindPulse.Core.Application.Services.Recommendations
 {
-    public class RecommendationService : GenericService<RecommendationDTO, RecommendationDTO, Recommendation, RecommendationDTO>, IRecommendationService
+    public class RecommendationService : IRecommendationService
     {
         private readonly IRecommendationRepository _recommendationRepository;
-        private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
 
-        public RecommendationService(
-            IRecommendationRepository recommendationRepository,
-            ICategoryService categoryService,
-            IMapper mapper
-        ) : base(recommendationRepository, mapper)
+        public RecommendationService(IRecommendationRepository recommendationRepository, IMapper mapper)
         {
             _recommendationRepository = recommendationRepository;
-            _categoryService = categoryService;
             _mapper = mapper;
         }
 
-        public async Task<ApiResponse<RecommendationDTO>> CreateAsync(RecommendationDTO dto)
+        public async Task<ApiResponse<int>> CreateAsync(RecommendationCreateDTO dto)
         {
-
-            var category = await _categoryService.GetByIdAsync(dto.CategoryId);
-            if (category == null)
-                return new ApiResponse<RecommendationDTO>(400, "La categoría especificada no existe.");
-
             var entity = _mapper.Map<Recommendation>(dto);
-
             var created = await _recommendationRepository.AddAsync(entity);
-
-            var result = _mapper.Map<RecommendationDTO>(created);
-
-            return new ApiResponse<RecommendationDTO>(201, result);
+            return new ApiResponse<int>(201, created.Id);
         }
 
-        //public async Task<ApiResponse<List<RecommendationDTO>>> GetByCategoryIdAsync(int categoryId)
-        //{
-        //    var recommendations = await _recommendationRepository.GetByCategoryIdAsync(categoryId);
+        public async Task<ApiResponse<List<RecommendationDTO>>> GetAllAsync()
+        {
+            var contents = await _recommendationRepository.GetAllAsync();
+            var dtos = _mapper.Map<List<RecommendationDTO>>(contents);
+            return new ApiResponse<List<RecommendationDTO>>(200, dtos);
+        }
 
-        //    var result = recommendations.Select(r => new RecommendationDTO
-        //    {
-        //        Id = r.Id,
-        //        Title = r.Title,
-        //        Content = r.Content,
-        //        CategoryId = r.CategoryId,
-        //        CategoryName = r.Category?.Name
-        //    }).ToList();
+        public async Task<ApiResponse<RecommendationDTO>> GetByIdAsync(int id)
+        {
+            var content = await _recommendationRepository.GetByIdAsync(id);
+            if (content == null)
+            {
+                return new ApiResponse<RecommendationDTO>(404, "No se encontraron recomendaciones.");
+            }
 
-        //    return new ApiResponse<List<RecommendationDTO>>(200, result);
-        //}
+            var dto = _mapper.Map<RecommendationDTO>(content);
+            return new ApiResponse<RecommendationDTO>(200, dto);
+        }
+
+        public async Task<ApiResponse<List<RecommendationDTO>>> GetAllByUserAsync(int userId)
+        {
+            var tests = await _recommendationRepository.GetAllByUserAsync(userId);
+            var dtoList = _mapper.Map<List<RecommendationDTO>>(tests);
+            return new ApiResponse<List<RecommendationDTO>>(200, dtoList);
+        }
+
+        public async Task<ApiResponse<List<RecommendationDTO>>> GetByCategoryIdAsync(int categoryId)
+        {
+            var list = await _recommendationRepository.GetByCategoryIdAsync(categoryId);
+            if (list == null)
+            {
+                return new ApiResponse<List<RecommendationDTO>>(404, "No se encontraron recomendaciones para esta categoría");
+            }
+
+            var dtos = _mapper.Map<List<RecommendationDTO>>(list);
+            return new ApiResponse<List<RecommendationDTO>>(200, dtos);
+        }
     }
 }

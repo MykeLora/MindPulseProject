@@ -1,4 +1,6 @@
-﻿using MindPulse.Core.Domain.Entities.Evaluations;
+﻿using MindPulse.Core.Application.DTOs.Evaluations.Test;
+using MindPulse.Core.Application.Wrappers;
+using MindPulse.Core.Domain.Entities.Evaluations;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,6 @@ namespace MindPulse.Core.Application.Interfaces.Repositories
         Task<List<Test>> GetAllAsync();
         Task<Test?> GetByIdAsync(int id);
         Task<List<Test>> GetAllByUserAsync(int userId);
-
+        Task<int> SubmitTestAsync(TestResponseDTO input);
     }
 }

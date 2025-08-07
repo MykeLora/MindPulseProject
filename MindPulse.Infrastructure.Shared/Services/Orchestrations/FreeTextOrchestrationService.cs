@@ -2,9 +2,10 @@
 using MindPulse.Core.Application.DTOs.Evaluations.UserResponse;
 using MindPulse.Core.Application.DTOs.Orchestrations;
 using MindPulse.Core.Application.Interfaces.Services;
+using MindPulse.Core.Application.Interfaces.Services.Orchestrations;
 using MindPulse.Core.Application.Wrappers;
 
-namespace MindPulse.Infrastructure.Shared.Services
+namespace MindPulse.Infrastructure.Shared.Services.Orchestrations
 {
     public class FreeTextOrchestrationService : IFreeTextOrchestrationService
     {

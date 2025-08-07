@@ -37,7 +37,7 @@ namespace MindPulse.Core.Application.Services.Recommendations
             var content = await _educationalContentRepository.GetByIdAsync(id);
             if (content == null) 
             {
-                return new ApiResponse<EducationalContentDTO>(404, "Contenido no encontrado");
+                return new ApiResponse<EducationalContentDTO>(404, "Contenido no encontrado.");
             }
 
             var dto = _mapper.Map<EducationalContentDTO>(content);
@@ -49,7 +49,7 @@ namespace MindPulse.Core.Application.Services.Recommendations
             var list = await _educationalContentRepository.GetByCategoryIdAsync(categoryId);
             if (list == null)
             {
-                return new ApiResponse<List<EducationalContentDTO>>(404, "No se encontraron contenidos para esta categoría");
+                return new ApiResponse<List<EducationalContentDTO>>(404, "No se encontraron contenidos para esta categoría.");
             }
             
             var dtos = _mapper.Map<List<EducationalContentDTO>>(list);

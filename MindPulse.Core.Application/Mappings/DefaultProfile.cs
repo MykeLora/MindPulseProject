@@ -63,6 +63,7 @@ namespace MindPulse.Core.Application.Mappings
             #endregion
 
             #region Recommendation
+            CreateMap<RecommendationCreateDTO, Recommendation>();
             CreateMap<Recommendation, RecommendationDTO>().ReverseMap();
             #endregion
 

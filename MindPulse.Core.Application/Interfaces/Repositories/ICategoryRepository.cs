@@ -1,4 +1,4 @@
-using MindPulse.Core.Domain.Entities.Categories;
+﻿using MindPulse.Core.Domain.Entities.Categories;
 
 namespace MindPulse.Core.Application.Interfaces.Repositories
 {

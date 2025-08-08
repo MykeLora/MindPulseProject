@@ -24,9 +24,6 @@ namespace MindPulse.Infrastructure.Persistence.EntityConfigurations.Emotions
             builder.Property(eh => eh.Confidence)
                    .IsRequired();
 
-            builder.Property(eh => eh.Date)
-                   .IsRequired();
-
             builder.HasOne(eh => eh.User)
                    .WithMany(u => u.EmotionalHistories)
                    .HasForeignKey(eh => eh.UserId)

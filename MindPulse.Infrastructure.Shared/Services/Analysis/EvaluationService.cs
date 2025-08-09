@@ -98,7 +98,7 @@ namespace MindPulse.Infrastructure.Shared.Services.Analysis
 
                         1. Un resumen del estado emocional del usuario (máximo 1000 caracteres).
                         2. Una recomendación breve para el usuario (máximo 500 caracteres).
-                        3. Un nivel de confianza del 0% al 100% sobre la estabilidad emocional del usuario.
+                        3. Un nivel de confianza del 0% al 100% basado en las respuestas del usuario.
                         4. Si es posible, sugiere una fuente confiable en español sobre el tema. 
                         
                         Usa este formato exacto para las respuestas:

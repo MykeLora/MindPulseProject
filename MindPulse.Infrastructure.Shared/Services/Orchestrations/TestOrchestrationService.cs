@@ -77,17 +77,12 @@ namespace MindPulse.Infrastructure.Shared.Services.Orchestrations
         {
             // Step 1: Store the test and get the test ID
             var testResponses = await _testService.SubmitTestAsync(input);
-            if (!testResponses.Success)
-            {
-                return new ApiResponse<TestAnalysisDTO>(testResponses.StatusCode, testResponses.Errors);
-            }
-
             var testId = testResponses.Data;
 
             // Step 2: Sending the responses, building the prompt for OpenAI and analyzing the test
             var aiAnalysis = await _evaluationService.EvaluateTestAsync(input);
 
-            // Step 4: Registering the confidence level in EmotionalHistories
+            // Step 3: Registering the confidence level in EmotionalHistories
             await _context.EmotionalHistories.AddAsync(new EmotionalHistory
             {
                 Confidence = aiAnalysis.Confidence,
@@ -95,7 +90,7 @@ namespace MindPulse.Infrastructure.Shared.Services.Orchestrations
                 UserId = input.UserId
             });
 
-            // Step 3: Storing the test result
+            // Step 4: Storing the test result
             var testResults = await _testResultService.CreateAsync(new TestResultCreateDTO
             {
                 Summary = aiAnalysis.Summary,
@@ -107,14 +102,14 @@ namespace MindPulse.Infrastructure.Shared.Services.Orchestrations
 
             var testResultId = testResults.Data;
 
-            // Step 4: Obtaining Category Name and Storing the educational content
+            // Step 5: Obtaining Category Name and Storing the educational content
             var category = await _categoryService.GetByIdAsync(input.CategoryId);
             var contentId = await StoreEducationalContentIfValid(aiAnalysis, category.Data.Name, input.CategoryId);
 
-            // Step 5: Storing the recommendation from OpenAI
+            // Step 6: Storing the recommendation from OpenAI
             await StoreRecommendation(aiAnalysis, input.UserId, input.CategoryId, contentId);
 
-            // Step 6: Storing the user responses
+            // Step 7: Storing the user responses
             foreach (var answer in input.Answers)
             {
                 await _userResponseService.CreateAsync(new UserResponseCreateDTO
@@ -127,7 +122,7 @@ namespace MindPulse.Infrastructure.Shared.Services.Orchestrations
                 });
             }
 
-            // Step 7: Returning the analysis details
+            // Step 8: Returning the analysis details
             return new ApiResponse<TestAnalysisDTO>(200, new TestAnalysisDTO
             {
                 Summary = aiAnalysis.Summary,

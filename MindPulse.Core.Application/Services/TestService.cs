@@ -38,7 +38,7 @@ namespace MindPulse.Infrastructure.Shared.Services
         {
             var entity = _mapper.Map<Test>(dto);
             await _testRepository.AddAsync(entity);
-            return new ApiResponse<int>(200, entity.Id);
+            return new ApiResponse<int>(200, data: entity.Id);
         }
 
         public async Task<ApiResponse<List<TestDTO>>> GetAllAsync()
@@ -67,15 +67,8 @@ namespace MindPulse.Infrastructure.Shared.Services
 
         public async Task<ApiResponse<int>> SubmitTestAsync(TestResponseDTO input)
         {
-            try
-            {
-                var testId = await _testRepository.SubmitTestAsync(input);
-                return new ApiResponse<int>(200, testId);
-            }
-            catch (Exception ex)
-            {
-                return new ApiResponse<int>(500, $"{ex.Message}");
-            }
+            var testId = await _testRepository.SubmitTestAsync(input);
+            return new ApiResponse<int>(200, data: testId);
         }
     }
 }
